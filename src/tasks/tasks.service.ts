@@ -1,54 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { Task, TaskStatus } from './models/task.model';
-import type { CreateTaskDto } from './dto/create-task.dto';
+import { TasksRepository } from './tasks.repository';
 import type { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
+import type { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @Injectable()
 export class TasksService {
-  private tasks: Task[] = [
-    {
-      id: '0',
-      title: 'todo',
-      status: TaskStatus.OPEN,
-      description: 'make todo app',
-    },
-  ];
+  constructor(private tasksRepository: TasksRepository) {}
 
-  public async getAllTasks() {
-    return this.tasks;
+  public getTasks(filterDto: GetFilteredTasksDto) {
+    return this.tasksRepository.getTasks(filterDto);
   }
 
-  public async getFilteredTasks(filterDto: GetFilteredTasksDto) {
-    const { status, search } = filterDto;
-
-    let tasks = await this.getAllTasks();
-
-    if (status) {
-      tasks = tasks.filter((task) => task.status === status);
-    }
-
-    if (search) {
-      tasks = tasks.filter((task) => {
-        return task.title.includes(search) || task.description.includes(search);
-      });
-    }
-
-    return tasks;
+  public getTaskById(id: string) {
+    return this.tasksRepository.getTaskById(id);
   }
 
-  public async getTaskById(id: string) {
-    return this.tasks.find((task) => task.id === id);
+  public createTask(createTaskDto: CreateTaskDto) {
+    return this.tasksRepository.createTask(createTaskDto);
   }
 
-  public async createTask(task: CreateTaskDto) {
-    const newTask: Task = {
-      ...task,
-      id: Math.random().toString(36),
-      status: TaskStatus.OPEN,
-    };
+  public deleteTask(id: string) {
+    return this.tasksRepository.deleteTask(id);
+  }
 
-    this.tasks.push(newTask);
-
-    return newTask;
+  public updateTaskStatus(id: string, { status }: UpdateTaskStatusDto) {
+    return this.tasksRepository.updateTaskStatus(id, status);
   }
 }
