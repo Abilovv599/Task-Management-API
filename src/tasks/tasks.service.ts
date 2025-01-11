@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TasksRepository } from './tasks.repository';
-import type { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
-import type { CreateTaskDto } from './dto/create-task.dto';
+import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @Injectable()
@@ -24,7 +24,10 @@ export class TasksService {
     return this.tasksRepository.deleteTask(id);
   }
 
-  public updateTaskStatus(id: string, { status }: UpdateTaskStatusDto) {
-    return this.tasksRepository.updateTaskStatus(id, status);
+  public updateTaskStatus(
+    id: string,
+    updateTaskStatusDto: UpdateTaskStatusDto,
+  ) {
+    return this.tasksRepository.updateTaskStatus(id, updateTaskStatusDto);
   }
 }

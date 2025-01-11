@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { Task } from './entities/task.entity';
-import { TASK_STATUS } from './enums/task-status.enum';
-import type { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
-import type { CreateTaskDto } from './dto/create-task.dto';
+import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @Injectable()
 export class TasksRepository {
@@ -73,7 +73,7 @@ export class TasksRepository {
     }
   }
 
-  public async updateTaskStatus(id: string, status: TASK_STATUS) {
+  public async updateTaskStatus(id: string, { status }: UpdateTaskStatusDto) {
     const task = await this.getTaskById(id);
 
     task.status = status;

@@ -9,8 +9,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import type { CreateTaskDto } from './dto/create-task.dto';
-import type { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @Controller('tasks')

@@ -12,9 +12,11 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   await app.listen(process.env.PORT ?? 3000);
 }
 
-bootstrap().catch((error) => console.error(error));
+bootstrap().catch((error) => {
+  console.error(error);
+});
