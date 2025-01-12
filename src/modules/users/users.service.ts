@@ -13,4 +13,8 @@ export class UsersService {
   public getUsers() {
     return this.usersRepository.getUsers();
   }
+
+  public getUserByEmail(username: string) {
+    return this.usersRepository.getUserByEmail(username);
+  }
 }
