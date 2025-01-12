@@ -33,15 +33,15 @@ export class TasksRepository {
   public getTasks(filterDto: GetFilteredTasksDto) {
     const { status, search } = filterDto;
 
-    const query = this.repository.createQueryBuilder('task');
+    const query = this.repository.createQueryBuilder('tasks');
 
     if (status) {
-      query.andWhere('task.status = :status', { status });
+      query.andWhere('tasks.status = :status', { status });
     }
 
     if (search) {
       query.andWhere(
-        'LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search)',
+        'LOWER(tasks.title) LIKE LOWER(:search) OR LOWER(tasks.description) LIKE LOWER(:search)',
         { search: `%${search}%` },
       );
     }
