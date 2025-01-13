@@ -15,6 +15,10 @@ export class UsersService {
   }
 
   public getUserByEmail(username: string) {
-    return this.usersRepository.getUserByEmail(username);
+    return this.usersRepository.getUserByUsername(username);
+  }
+
+  public getUserById(id: string) {
+    return this.usersRepository.getUserById(id);
   }
 }

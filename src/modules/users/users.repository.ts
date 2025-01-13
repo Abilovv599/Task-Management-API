@@ -38,7 +38,7 @@ export class UsersRepository {
     return this.repository.find();
   }
 
-  public async getUserByEmail(username: string) {
+  public async getUserByUsername(username: string) {
     const isUserExists = await this.repository.existsBy({ username });
 
     if (!isUserExists) {
@@ -46,5 +46,15 @@ export class UsersRepository {
     }
 
     return this.repository.findOneBy({ username });
+  }
+
+  public async getUserById(id: string) {
+    const isUserExists = await this.repository.existsBy({ id });
+
+    if (!isUserExists) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    return this.repository.findOneBy({ id });
   }
 }
