@@ -24,6 +24,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('profile')
   public getProfile(@CurrentUser() user: User) {
-    // return this.authService.getProfile(user);
+    return this.authService.getProfile(user);
   }
 }

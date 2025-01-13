@@ -25,7 +25,7 @@ export class AuthService {
     const { username, password } = authCredentialsDto;
 
     const user = await this.usersService
-      .getUserByEmail(username)
+      .getUserByUsername(username)
       .catch((error: NotFoundException) => {
         throw new UnauthorizedException(error.message);
       });
@@ -51,5 +51,9 @@ export class AuthService {
 
   public signUp(authCredentialsDto: AuthCredentialsDto) {
     return this.usersService.createUser(authCredentialsDto);
+  }
+
+  public getProfile(user: User) {
+    return this.usersService.getUserById(user.id);
   }
 }
