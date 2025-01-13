@@ -17,8 +17,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  public validateUserById(id: string) {
-    return this.usersService.getUserById(id);
+  public async validateUserById(id: string) {
+    return await this.usersService.getUserById(id);
   }
 
   public async validateUser(authCredentialsDto: AuthCredentialsDto) {
@@ -41,7 +41,11 @@ export class AuthService {
     return user;
   }
 
-  public async signIn(user: Omit<User, 'password'>) {
+  public async signIn(authCredentialsDto: AuthCredentialsDto) {
+    const user = await this.usersService.getUserByUsername(
+      authCredentialsDto.username,
+    );
+
     const payload: JwtPayload = { username: user.username, sub: user.id };
 
     return {
