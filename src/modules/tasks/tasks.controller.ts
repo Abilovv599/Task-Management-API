@@ -24,6 +24,14 @@ export class TasksController {
     return this.tasksService.getTasks(filterDto);
   }
 
+  @Get('user-tasks')
+  public getUsersTasks(
+    @Query() filterDto: GetFilteredTasksDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.tasksService.getTasks(filterDto, user);
+  }
+
   @Get(':id')
   public getTaskById(@Param('id') id: string) {
     return this.tasksService.getTaskById(id);

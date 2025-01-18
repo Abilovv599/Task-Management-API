@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
 import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
+import { User } from '~/modules/users/entities/user.entity';
 
 @Injectable()
 export class TasksRepository extends Repository<Task> {
@@ -9,10 +10,14 @@ export class TasksRepository extends Repository<Task> {
     super(Task, dataSource.createEntityManager());
   }
 
-  public getTasks(filterDto: GetFilteredTasksDto) {
+  public getTasks(filterDto: GetFilteredTasksDto, user?: User) {
     const { status, search } = filterDto;
 
     const query = this.createQueryBuilder('tasks');
+
+    if (user) {
+      query.andWhere('tasks.userId = :userId', { userId: user.id });
+    }
 
     if (status) {
       query.andWhere('tasks.status = :status', { status });
