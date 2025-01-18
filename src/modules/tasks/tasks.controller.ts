@@ -24,6 +24,11 @@ export class TasksController {
     return this.tasksService.getTasks(filterDto);
   }
 
+  @Get(':id')
+  public getTaskById(@Param('id') id: string) {
+    return this.tasksService.getTaskById(id);
+  }
+
   @Get('user-tasks')
   public getUsersTasks(
     @Query() filterDto: GetFilteredTasksDto,
@@ -32,9 +37,9 @@ export class TasksController {
     return this.tasksService.getTasks(filterDto, user);
   }
 
-  @Get(':id')
-  public getTaskById(@Param('id') id: string) {
-    return this.tasksService.getTaskById(id);
+  @Get('user-task/:id')
+  public getUserTaskById(@Param('id') id: string, @CurrentUser() user: User) {
+    return this.tasksService.getTaskById(id, user);
   }
 
   @Post()
@@ -46,15 +51,16 @@ export class TasksController {
   }
 
   @Delete(':id')
-  public deleteTask(@Param('id') id: string) {
-    return this.tasksService.deleteTask(id);
+  public deleteTask(@Param('id') id: string, @CurrentUser() user: User) {
+    return this.tasksService.deleteTask(id, user);
   }
 
   @Patch(':id/status')
   public updateTaskStatus(
     @Param('id') id: string,
     @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+    @CurrentUser() user: User,
   ) {
-    return this.tasksService.updateTaskStatus(id, updateTaskStatusDto);
+    return this.tasksService.updateTaskStatus(id, updateTaskStatusDto, user);
   }
 }

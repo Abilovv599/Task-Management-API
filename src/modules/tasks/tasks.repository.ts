@@ -51,8 +51,9 @@ export class TasksRepository extends Repository<Task> {
   //   return this.find({ where });
   // }
 
-  public async deleteTask(id: string) {
-    const result = await this.delete(id);
+  public async deleteTask(id: string, user: User) {
+    const result = await this.delete({ id, user });
+
     return result.affected || 0;
   }
 }
