@@ -17,6 +17,12 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new TransformInterceptor());
 
+  app.enableCors({
+    origin: 'http://localhost:3001', // Replace with the origin you want to allow
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Allow cookies if needed
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 
