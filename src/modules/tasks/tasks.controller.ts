@@ -12,6 +12,8 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { User } from '../users/entities/user.entity';
 
 @Controller('tasks')
 export class TasksController {
@@ -28,8 +30,11 @@ export class TasksController {
   }
 
   @Post()
-  public createTask(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.createTask(createTaskDto);
+  public createTask(
+    @Body() createTaskDto: CreateTaskDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.tasksService.createTask(createTaskDto, user);
   }
 
   @Delete(':id')

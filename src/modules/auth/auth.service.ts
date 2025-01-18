@@ -6,8 +6,7 @@ import {
 import { UsersService } from '../users/users.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { JwtService } from '@nestjs/jwt';
-import { comparePassword } from '../../lib/bcrypt';
-import { User } from '../users/entities/user.entity';
+import { comparePassword } from '~/lib/bcrypt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 
 @Injectable()
@@ -16,10 +15,6 @@ export class AuthService {
     private readonly usersService: UsersService,
     private jwtService: JwtService,
   ) {}
-
-  public async validateUserById(id: string) {
-    return await this.usersService.getUserById(id);
-  }
 
   public async validateUser(authCredentialsDto: AuthCredentialsDto) {
     const { username, password } = authCredentialsDto;
@@ -36,28 +31,20 @@ export class AuthService {
       throw new UnauthorizedException('Passwords do not match');
     }
 
-    delete user.password;
-
     return user;
   }
 
   public async signIn(authCredentialsDto: AuthCredentialsDto) {
-    const user = await this.usersService.getUserByUsername(
-      authCredentialsDto.username,
-    );
+    const user = await this.validateUser(authCredentialsDto);
 
     const payload: JwtPayload = { username: user.username, sub: user.id };
 
-    return {
-      accessToken: await this.jwtService.signAsync(payload),
-    };
+    const accessToken = await this.jwtService.signAsync(payload);
+
+    return { accessToken };
   }
 
   public signUp(authCredentialsDto: AuthCredentialsDto) {
     return this.usersService.createUser(authCredentialsDto);
-  }
-
-  public getProfile(user: User) {
-    return this.usersService.getUserById(user.id);
   }
 }

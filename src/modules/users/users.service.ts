@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
-import { hashPassword } from '../../lib/bcrypt';
+import { hashPassword } from '~/lib/bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -32,7 +32,7 @@ export class UsersService {
       password: hashedPassword,
     });
 
-    return this.usersRepository.save(newUser);
+    return await this.usersRepository.save(newUser);
   }
 
   public async getUserByUsername(username: string) {
