@@ -17,8 +17,11 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+
     "paths": {
       "~/*": ["src/*"]
-    }
+    },
+
+    "esModuleInterop": true // for not using import * as Joi
   }
 }

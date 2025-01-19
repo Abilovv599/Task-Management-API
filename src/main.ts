@@ -4,7 +4,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './modules/app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from '~/interceptors/tranfsorm.interceptor';
 
 async function bootstrap() {
@@ -13,17 +13,27 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
+  const logger = new Logger('Bootstrap', { timestamp: true });
+
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   app.useGlobalInterceptors(new TransformInterceptor());
 
   app.enableCors({
-    origin: 'http://localhost:3001', // Replace with the origin you want to allow
+    origin: 'http://localhost:3001',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Allow cookies if needed
   });
 
-  await app.listen(process.env.PORT ?? 3000);
+  const port = process.env.PORT;
+
+  await app.listen(port ?? 3000);
+
+  const environment = process.env.NODE_ENV || 'development';
+
+  logger.log(
+    `Application running in ${environment} mode on http://localhost:${port}`,
+  );
 }
 
 bootstrap().catch((error) => {
