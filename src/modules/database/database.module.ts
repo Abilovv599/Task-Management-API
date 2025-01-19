@@ -9,6 +9,8 @@ import { IConfigSchema } from '~/configs/config.schema';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService<IConfigSchema>) => {
+        const isDevelopment = configService.get('NODE_ENV') === 'development';
+
         return {
           type: configService.get('DB_TYPE'),
           host: configService.get('DB_HOST'),
@@ -16,7 +18,7 @@ import { IConfigSchema } from '~/configs/config.schema';
           username: configService.get('DB_USERNAME'),
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_NAME'),
-          synchronize: configService.get('NODE_ENV') === 'development',
+          synchronize: isDevelopment,
           autoLoadEntities: true,
         } as TypeOrmModuleOptions;
       },
