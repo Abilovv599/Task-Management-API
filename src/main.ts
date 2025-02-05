@@ -6,7 +6,7 @@ import { TransformInterceptor } from '~/interceptors/tranfsorm.interceptor';
 import { createSwagger } from '~/swagger/swagger.config';
 
 async function bootstrap() {
-  const environment = process.env.NODE_ENV || 'development';
+  const environment = process.env.NODE_ENV ?? 'development';
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 

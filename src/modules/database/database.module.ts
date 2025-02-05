@@ -8,7 +8,7 @@ import { IConfigSchema } from '~/configs/config.schema';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService<IConfigSchema>) => {
+      useFactory: (configService: ConfigService<IConfigSchema>) => {
         const isDevelopment = configService.get('NODE_ENV') === 'development';
 
         return {
