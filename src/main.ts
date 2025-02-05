@@ -1,17 +1,12 @@
 import { NestFactory } from '@nestjs/core';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
-import { AppModule } from './modules/app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { AppModule } from './modules/app.module';
 import { TransformInterceptor } from '~/interceptors/tranfsorm.interceptor';
+import { createSwagger } from '~/modules/swagger/swagger.builder';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter(),
-  );
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const logger = new Logger('Bootstrap', { timestamp: true });
 
@@ -24,6 +19,8 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Allow cookies if needed
   });
+
+  createSwagger(app);
 
   const port = process.env.PORT;
 
