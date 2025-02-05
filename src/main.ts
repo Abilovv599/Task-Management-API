@@ -3,7 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './modules/app.module';
 import { TransformInterceptor } from '~/interceptors/tranfsorm.interceptor';
-import { createSwagger } from '~/modules/swagger/swagger.builder';
+import { createSwagger } from '~/modules/swagger/swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
