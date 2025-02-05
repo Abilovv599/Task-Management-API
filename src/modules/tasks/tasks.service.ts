@@ -4,16 +4,20 @@ import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { User } from '../users/entities/user.entity';
+import { Task } from '~/modules/tasks/entities/task.entity';
 
 @Injectable()
 export class TasksService {
   constructor(private tasksRepository: TasksRepository) {}
 
-  public async getTasks(filterDto: GetFilteredTasksDto, user?: User) {
+  public async getTasks(
+    filterDto: GetFilteredTasksDto,
+    user?: User,
+  ): Promise<Task[]> {
     return this.tasksRepository.getTasks(filterDto, user);
   }
 
-  public async getTaskById(id: string, user?: User) {
+  public async getTaskById(id: string, user?: User): Promise<Task> {
     const task = await this.tasksRepository.findOne({
       where: { id, user: user && user },
     });
@@ -25,13 +29,13 @@ export class TasksService {
     return task;
   }
 
-  public createTask(createTaskDto: CreateTaskDto, user: User) {
+  public createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
     const newTask = this.tasksRepository.create({ ...createTaskDto, user });
 
     return this.tasksRepository.save(newTask);
   }
 
-  public async deleteTask(id: string, user: User) {
+  public async deleteTask(id: string, user: User): Promise<void> {
     const affectedRows = await this.tasksRepository.deleteTask(id, user);
 
     if (affectedRows === 0) {
@@ -43,7 +47,7 @@ export class TasksService {
     id: string,
     { status }: UpdateTaskStatusDto,
     user: User,
-  ) {
+  ): Promise<Task> {
     const task = await this.getTaskById(id, user);
 
     task.status = status;

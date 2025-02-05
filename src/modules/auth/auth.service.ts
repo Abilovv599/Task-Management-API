@@ -8,6 +8,8 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { JwtService } from '@nestjs/jwt';
 import { comparePassword } from '~/lib/bcrypt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { User } from '~/modules/users/entities/user.entity';
+import { IAccessToken } from '~/modules/auth/interfaces/access-token.interface';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +18,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  public async validateUser(authCredentialsDto: AuthCredentialsDto) {
+  public async validateUser(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<User> {
     const { username, password } = authCredentialsDto;
 
     const user = await this.usersService
@@ -34,7 +38,9 @@ export class AuthService {
     return user;
   }
 
-  public async signIn(authCredentialsDto: AuthCredentialsDto) {
+  public async signIn(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<IAccessToken> {
     const user = await this.validateUser(authCredentialsDto);
 
     const payload: JwtPayload = { username: user.username, sub: user.id };
@@ -44,7 +50,7 @@ export class AuthService {
     return { accessToken };
   }
 
-  public signUp(authCredentialsDto: AuthCredentialsDto) {
+  public signUp(authCredentialsDto: AuthCredentialsDto): Promise<User> {
     return this.usersService.createUser(authCredentialsDto);
   }
 }

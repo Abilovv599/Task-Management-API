@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import type { StringValue } from 'ms';
 
 export interface IConfigSchema {
   NODE_ENV: 'development' | 'production' | 'test';
@@ -12,6 +13,7 @@ export interface IConfigSchema {
   DB_PASSWORD: string;
 
   JWT_SECRET: string;
+  TOKEN_EXPIRE_TIME: StringValue;
 }
 
 export const configValidationSchema = Joi.object<IConfigSchema>({
@@ -27,4 +29,5 @@ export const configValidationSchema = Joi.object<IConfigSchema>({
   DB_PASSWORD: Joi.string().required(),
 
   JWT_SECRET: Joi.string().required(),
+  TOKEN_EXPIRE_TIME: Joi.string().default('1day'),
 });

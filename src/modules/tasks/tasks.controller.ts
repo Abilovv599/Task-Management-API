@@ -14,13 +14,14 @@ import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
+import type { Task } from '~/modules/tasks/entities/task.entity';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  public getTasks(@Query() filterDto: GetFilteredTasksDto) {
+  public getTasks(@Query() filterDto: GetFilteredTasksDto): Promise<Task[]> {
     return this.tasksService.getTasks(filterDto);
   }
 
@@ -28,17 +29,20 @@ export class TasksController {
   public getUsersTasks(
     @Query() filterDto: GetFilteredTasksDto,
     @CurrentUser() user: User,
-  ) {
+  ): Promise<Task[]> {
     return this.tasksService.getTasks(filterDto, user);
   }
 
   @Get('user-task/:id')
-  public getUserTaskById(@Param('id') id: string, @CurrentUser() user: User) {
+  public getUserTaskById(
+    @Param('id') id: string,
+    @CurrentUser() user: User,
+  ): Promise<Task> {
     return this.tasksService.getTaskById(id, user);
   }
 
   @Get(':id')
-  public getTaskById(@Param('id') id: string) {
+  public getTaskById(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getTaskById(id);
   }
 
@@ -46,7 +50,7 @@ export class TasksController {
   public createTask(
     @Body() createTaskDto: CreateTaskDto,
     @CurrentUser() user: User,
-  ) {
+  ): Promise<Task> {
     return this.tasksService.createTask(createTaskDto, user);
   }
 
@@ -55,12 +59,15 @@ export class TasksController {
     @Param('id') id: string,
     @Body() updateTaskStatusDto: UpdateTaskStatusDto,
     @CurrentUser() user: User,
-  ) {
+  ): Promise<Task> {
     return this.tasksService.updateTaskStatus(id, updateTaskStatusDto, user);
   }
 
   @Delete(':id')
-  public deleteTask(@Param('id') id: string, @CurrentUser() user: User) {
+  public deleteTask(
+    @Param('id') id: string,
+    @CurrentUser() user: User,
+  ): Promise<void> {
     return this.tasksService.deleteTask(id, user);
   }
 }

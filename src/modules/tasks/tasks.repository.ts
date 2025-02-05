@@ -10,7 +10,10 @@ export class TasksRepository extends Repository<Task> {
     super(Task, dataSource.createEntityManager());
   }
 
-  public getTasks(filterDto: GetFilteredTasksDto, user?: User) {
+  public getTasks(
+    filterDto: GetFilteredTasksDto,
+    user?: User,
+  ): Promise<Task[]> {
     const { status, search } = filterDto;
 
     const query = this.createQueryBuilder('tasks');
@@ -51,7 +54,7 @@ export class TasksRepository extends Repository<Task> {
   //   return this.find({ where });
   // }
 
-  public async deleteTask(id: string, user: User) {
+  public async deleteTask(id: string, user: User): Promise<number> {
     const result = await this.delete({ id, user });
 
     return result.affected || 0;

@@ -6,16 +6,17 @@ import {
 import { UsersRepository } from './users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hashPassword } from '~/lib/bcrypt';
+import { User } from '~/modules/users/entities/user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  public async getUsers() {
+  public async getUsers(): Promise<User[]> {
     return await this.usersRepository.find();
   }
 
-  public async createUser(createUserDto: CreateUserDto) {
+  public async createUser(createUserDto: CreateUserDto): Promise<User> {
     const { username, password } = createUserDto;
     const isExistingUser = await this.usersRepository.existsBy({ username });
 
@@ -35,7 +36,7 @@ export class UsersService {
     return await this.usersRepository.save(newUser);
   }
 
-  public async getUserByUsername(username: string) {
+  public async getUserByUsername(username: string): Promise<User> {
     const user = await this.usersRepository.findOneBy({ username });
 
     if (!user) {
@@ -45,7 +46,7 @@ export class UsersService {
     return user;
   }
 
-  public async getUserById(id: string) {
+  public async getUserById(id: string): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id });
 
     if (!user) {
