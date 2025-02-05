@@ -21,7 +21,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "./src/**/*.{ts,tsx,vue}": "yarn lint",
+    "./src/**/*.ts": "yarn lint",
     "./src/*": "yarn format"
   },
   "dependencies": {
