@@ -6,6 +6,8 @@ import { TransformInterceptor } from '~/interceptors/tranfsorm.interceptor';
 import { createSwagger } from '~/modules/swagger/swagger.config';
 
 async function bootstrap() {
+  const environment = process.env.NODE_ENV || 'development';
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const logger = new Logger('Bootstrap', { timestamp: true });
@@ -20,16 +22,16 @@ async function bootstrap() {
     credentials: true, // Allow cookies if needed
   });
 
-  createSwagger(app);
+  if (environment === 'development') {
+    createSwagger(app);
+  }
 
   const port = process.env.PORT;
 
   await app.listen(port ?? 3000);
 
-  const environment = process.env.NODE_ENV || 'development';
-
   logger.log(
-    `Application running in ${environment} mode on http://localhost:${port}`,
+    `Application running in "${environment}" mode on http://localhost:${port}`,
   );
 }
 
