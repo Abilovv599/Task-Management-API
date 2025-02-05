@@ -19,10 +19,7 @@ export default tsEslint.config(
   },
   {
     languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.jest,
-      },
+      globals: globals.node,
       parserOptions: {
         parser: tsEslint.parser,
         projectService: true,
