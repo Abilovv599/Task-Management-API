@@ -14,6 +14,10 @@ export interface IConfigSchema {
 
   JWT_SECRET: string;
   TOKEN_EXPIRE_TIME: StringValue;
+
+  GOOGLE_AUTH_CLIENT_ID: string
+  GOOGLE_AUTH_CLIENT_SECRET: string
+  GOOGLE_AUTH_CALLBACK_URL: string
 }
 
 export const configValidationSchema = Joi.object<IConfigSchema>({
@@ -30,4 +34,8 @@ export const configValidationSchema = Joi.object<IConfigSchema>({
 
   JWT_SECRET: Joi.string().required(),
   TOKEN_EXPIRE_TIME: Joi.string().default('1day'),
+
+  GOOGLE_AUTH_CLIENT_ID: Joi.string().required(),
+  GOOGLE_AUTH_CLIENT_SECRET: Joi.string().required(),
+  GOOGLE_AUTH_CALLBACK_URL: Joi.string().required(),
 });
