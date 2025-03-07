@@ -10,9 +10,10 @@ import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
 import { randomBytes } from 'crypto';
 
-import { comparePassword } from '~/lib/bcrypt';
 import { IAccessToken } from '~/modules/auth/interfaces/access-token.interface';
 import { User } from '~/modules/users/entities/user.entity';
+
+import { comparePassword } from '~/lib/bcrypt';
 
 import { UsersService } from '../users/users.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
