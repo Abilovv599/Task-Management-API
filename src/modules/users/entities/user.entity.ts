@@ -8,11 +8,11 @@ export class User {
   id: string;
 
   @Column({ unique: true })
-  username: string;
+  email: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Exclude({ toPlainOnly: true })
-  password: string;
+  password?: string;
 
   @OneToMany(() => Task, (task) => task.user, { eager: true })
   tasks: Task[];

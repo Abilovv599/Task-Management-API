@@ -17,12 +17,12 @@ export class UsersService {
   }
 
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { username, password } = createUserDto;
-    const isExistingUser = await this.usersRepository.existsBy({ username });
+    const { email, password } = createUserDto;
+    const isExistingUser = await this.usersRepository.existsBy({ email });
 
     if (isExistingUser) {
       throw new ConflictException(
-        `User with username ${username} already exists`,
+        `User with email ${email} already exists`,
       );
     }
 
@@ -36,14 +36,22 @@ export class UsersService {
     return await this.usersRepository.save(newUser);
   }
 
-  public async getUserByUsername(username: string): Promise<User> {
-    const user = await this.usersRepository.findOneBy({ username });
+  public async createGoogleUser(email: string): Promise<User> {
+    const isExistingUser = await this.usersRepository.existsBy({ email });
 
-    if (!user) {
-      throw new NotFoundException(`User with username ${username} not found`);
+    if (isExistingUser) {
+      throw new ConflictException(
+        `User with email ${email} already exists`,
+      );
     }
 
-    return user;
+    const newUser = this.usersRepository.create({email});
+
+    return await this.usersRepository.save(newUser);
+  }
+
+  public async getUserByEmail(email: string): Promise<User | null> {
+    return await this.usersRepository.findOneBy({ email });
   }
 
   public async getUserById(id: string): Promise<User> {

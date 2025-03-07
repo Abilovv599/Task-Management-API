@@ -1,9 +1,10 @@
-import { IsStrongPassword, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsStrongPassword, MaxLength, MinLength } from 'class-validator';
 
 export class AuthCredentialsDto {
   @MinLength(4)
   @MaxLength(20)
-  username: string;
+  @IsEmail()
+  email: string;
 
   @IsStrongPassword()
   @MinLength(8)
