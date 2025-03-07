@@ -12,7 +12,9 @@ import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    CacheModule.register(),
+    CacheModule.register({
+      isGlobal: true,
+    }),
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,
