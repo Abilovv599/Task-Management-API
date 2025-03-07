@@ -12,7 +12,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  const logger = new Logger('Bootstrap', { timestamp: true });
+  app.setGlobalPrefix('api');
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
@@ -31,6 +31,8 @@ async function bootstrap() {
   const port = process.env.PORT;
 
   await app.listen(port ?? 3000);
+
+  const logger = new Logger('Bootstrap', { timestamp: true });
 
   logger.log(
     `Application running in "${environment}" mode on http://localhost:${port}`,
