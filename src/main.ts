@@ -1,9 +1,11 @@
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { AppModule } from './modules/app.module';
+
 import { TransformInterceptor } from '~/interceptors/tranfsorm.interceptor';
 import { createSwagger } from '~/swagger/swagger.config';
+
+import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
   const environment = process.env.NODE_ENV ?? 'development';

@@ -1,5 +1,6 @@
-import Joi from 'joi';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+
+import Joi from 'joi';
 import type { StringValue } from 'ms';
 
 export interface IConfigSchema {
@@ -15,9 +16,9 @@ export interface IConfigSchema {
   JWT_SECRET: string;
   TOKEN_EXPIRE_TIME: StringValue;
 
-  GOOGLE_AUTH_CLIENT_ID: string
-  GOOGLE_AUTH_CLIENT_SECRET: string
-  GOOGLE_AUTH_CALLBACK_URL: string
+  GOOGLE_AUTH_CLIENT_ID: string;
+  GOOGLE_AUTH_CLIENT_SECRET: string;
+  GOOGLE_AUTH_CALLBACK_URL: string;
 }
 
 export const configValidationSchema = Joi.object<IConfigSchema>({

@@ -3,10 +3,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UsersRepository } from './users.repository';
-import { CreateUserDto } from './dto/create-user.dto';
+
 import { hashPassword } from '~/lib/bcrypt';
 import { User } from '~/modules/users/entities/user.entity';
+
+import { CreateUserDto } from './dto/create-user.dto';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
@@ -21,9 +23,7 @@ export class UsersService {
     const isExistingUser = await this.usersRepository.existsBy({ email });
 
     if (isExistingUser) {
-      throw new ConflictException(
-        `User with email ${email} already exists`,
-      );
+      throw new ConflictException(`User with email ${email} already exists`);
     }
 
     const hashedPassword = await hashPassword(password);
@@ -40,12 +40,10 @@ export class UsersService {
     const isExistingUser = await this.usersRepository.existsBy({ email });
 
     if (isExistingUser) {
-      throw new ConflictException(
-        `User with email ${email} already exists`,
-      );
+      throw new ConflictException(`User with email ${email} already exists`);
     }
 
-    const newUser = this.usersRepository.create({email});
+    const newUser = this.usersRepository.create({ email });
 
     return await this.usersRepository.save(newUser);
   }

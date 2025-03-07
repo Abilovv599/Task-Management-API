@@ -1,4 +1,4 @@
-import { compare, hash, genSalt } from 'bcrypt';
+import { compare, genSalt, hash } from 'bcrypt';
 
 async function hashPassword(password: string) {
   try {

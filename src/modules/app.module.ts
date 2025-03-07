@@ -1,12 +1,14 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
-import { TasksModule } from './tasks/tasks.module';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from './database/database.module';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { LoggerMiddleware } from '~/middlewares/logger.middleware';
+
 import { configValidationSchema } from '~/configs/config.schema';
+import { LoggerMiddleware } from '~/middlewares/logger.middleware';
+
+import { AuthModule } from './auth/auth.module';
+import { DatabaseModule } from './database/database.module';
+import { TasksModule } from './tasks/tasks.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
