@@ -7,7 +7,7 @@ import {
 import type { User } from '~/core/entities/user.entity';
 import { hashPassword } from '~/lib/bcrypt';
 
-import type { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './users.repository';
 
 @Injectable()

@@ -20,7 +20,8 @@ import { CurrentUser } from '~/decorators/current-user.decorator';
 import { SkipAuth } from '~/decorators/skip-auth.decorator';
 
 import { AuthService } from './auth.service';
-import type { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { ExchangeCodeDto } from './dto/exchange-code.dto';
 import type { AccessTokenInterface } from './interfaces/access-token.interface';
 
 @Controller('auth')
@@ -59,9 +60,9 @@ export class AuthController {
   }
 
   @SkipAuth()
-  @Post('exchange-code')
+  @Post('login/google/exchange-code')
   public async exchangeCode(
-    @Body('code') code: string,
+    @Body() { code }: ExchangeCodeDto,
   ): Promise<AccessTokenInterface> {
     if (!code) throw new BadRequestException('Code is required');
 

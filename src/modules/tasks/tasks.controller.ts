@@ -13,9 +13,9 @@ import type { Task } from '~/core/entities/task.entity';
 import type { User } from '~/core/entities/user.entity';
 import { CurrentUser } from '~/decorators/current-user.decorator';
 
-import type { CreateTaskDto } from './dto/create-task.dto';
-import type { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
-import type { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')

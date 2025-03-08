@@ -15,7 +15,7 @@ import { UsersService } from '~/modules/users/users.service';
 import type { User } from '~/core/entities/user.entity';
 import { comparePassword } from '~/lib/bcrypt';
 
-import type { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import type { AccessTokenInterface } from './interfaces/access-token.interface';
 import type { JwtPayloadInterface } from './interfaces/jwt-payload.interface';
 
