@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Task } from '~/entities/task.entity';
+import { Task } from '~/core/entities/task.entity';
 
 @Entity('users')
 export class User {

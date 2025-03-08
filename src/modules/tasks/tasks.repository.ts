@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 
 import { DataSource, Repository } from 'typeorm';
 
-import { Task } from '~/entities/task.entity';
-import type { User } from '~/entities/user.entity';
+import { Task } from '~/core/entities/task.entity';
+import type { User } from '~/core/entities/user.entity';
 
 import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
 

@@ -12,7 +12,7 @@ import { randomBytes } from 'crypto';
 
 import { UsersService } from '~/modules/users/users.service';
 
-import type { User } from '~/entities/user.entity';
+import type { User } from '~/core/entities/user.entity';
 import { comparePassword } from '~/lib/bcrypt';
 
 import type { AuthCredentialsDto } from './dto/auth-credentials.dto';

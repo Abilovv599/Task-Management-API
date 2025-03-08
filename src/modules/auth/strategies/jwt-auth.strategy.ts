@@ -6,7 +6,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { UsersService } from '~/modules/users/users.service';
 
-import type { User } from '~/entities/user.entity';
+import type { User } from '~/core/entities/user.entity';
 
 import type { JwtPayloadInterface } from '../interfaces/jwt-payload.interface';
 

@@ -6,7 +6,7 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth2';
 
 import { AuthService } from '~/modules/auth/auth.service';
 
-import type { User } from '~/entities/user.entity';
+import type { User } from '~/core/entities/user.entity';
 
 import type { GoogleProfileInterface } from '../interfaces/google-profile.interface';
 

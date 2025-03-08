@@ -15,11 +15,11 @@ import type { Response } from 'express';
 
 import { GoogleAuthGuard } from '~/modules/auth/guards/google-auth.guard';
 
+import type { User } from '~/core/entities/user.entity';
 import { CurrentUser } from '~/decorators/current-user.decorator';
-import type { User } from '~/entities/user.entity';
+import { SkipAuth } from '~/decorators/skip-auth.decorator';
 
 import { AuthService } from './auth.service';
-import { SkipAuth } from './decorators/skip-auth.decorator';
 import type { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import type { AccessTokenInterface } from './interfaces/access-token.interface';
 

@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import type { User } from '~/entities/user.entity';
+import type { User } from '~/core/entities/user.entity';
 import { hashPassword } from '~/lib/bcrypt';
 
 import type { CreateUserDto } from './dto/create-user.dto';
