@@ -1,4 +1,4 @@
-export interface IGoogleProfile {
+export interface GoogleProfileInterface {
   provider: 'google';
   sub: string; // Unique Google user ID
   id: string; // Same as sub (redundant)

@@ -11,16 +11,17 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { Response } from 'express';
+import type { Response } from 'express';
 
 import { GoogleAuthGuard } from '~/modules/auth/guards/google-auth.guard';
-import { IAccessToken } from '~/modules/auth/interfaces/access-token.interface';
 
-import { User } from '../users/entities/user.entity';
+import { CurrentUser } from '~/decorators/current-user.decorator';
+import type { User } from '~/entities/user.entity';
+
 import { AuthService } from './auth.service';
-import { CurrentUser } from './decorators/current-user.decorator';
 import { SkipAuth } from './decorators/skip-auth.decorator';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import type { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import type { AccessTokenInterface } from './interfaces/access-token.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -59,7 +60,9 @@ export class AuthController {
 
   @SkipAuth()
   @Post('exchange-code')
-  public async exchangeCode(@Body('code') code: string): Promise<IAccessToken> {
+  public async exchangeCode(
+    @Body('code') code: string,
+  ): Promise<AccessTokenInterface> {
     if (!code) throw new BadRequestException('Code is required');
 
     const accessToken = await this.authService.exchangeAuthCode(code);
@@ -74,7 +77,7 @@ export class AuthController {
   @Post('login')
   public signIn(
     @Body() authCredentialsDto: AuthCredentialsDto,
-  ): Promise<IAccessToken> {
+  ): Promise<AccessTokenInterface> {
     return this.authService.signIn(authCredentialsDto);
   }
 

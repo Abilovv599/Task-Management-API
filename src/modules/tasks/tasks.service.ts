@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { Task } from '~/modules/tasks/entities/task.entity';
+import type { Task } from '~/entities/task.entity';
+import type { User } from '~/entities/user.entity';
 
-import { User } from '../users/entities/user.entity';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
-import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import type { CreateTaskDto } from './dto/create-task.dto';
+import type { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
+import type { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { TasksRepository } from './tasks.repository';
 
 @Injectable()

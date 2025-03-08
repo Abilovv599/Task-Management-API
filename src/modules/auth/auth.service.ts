@@ -10,14 +10,14 @@ import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
 import { randomBytes } from 'crypto';
 
-import { IAccessToken } from '~/modules/auth/interfaces/access-token.interface';
-import { User } from '~/modules/users/entities/user.entity';
+import { UsersService } from '~/modules/users/users.service';
 
+import type { User } from '~/entities/user.entity';
 import { comparePassword } from '~/lib/bcrypt';
 
-import { UsersService } from '../users/users.service';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
-import { JwtPayload } from './interfaces/jwt-payload.interface';
+import type { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import type { AccessTokenInterface } from './interfaces/access-token.interface';
+import type { JwtPayloadInterface } from './interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -58,8 +58,8 @@ export class AuthService {
     return await this.usersService.createGoogleUser(email);
   }
 
-  public async generateJwtToken(user: User): Promise<IAccessToken> {
-    const payload: JwtPayload = { email: user.email, sub: user.id };
+  public async generateJwtToken(user: User): Promise<AccessTokenInterface> {
+    const payload: JwtPayloadInterface = { email: user.email, sub: user.id };
 
     const accessToken = await this.jwtService.signAsync(payload);
 
@@ -68,7 +68,7 @@ export class AuthService {
 
   public async signIn(
     authCredentialsDto: AuthCredentialsDto,
-  ): Promise<IAccessToken> {
+  ): Promise<AccessTokenInterface> {
     const user = await this.validateUser(authCredentialsDto);
 
     return this.generateJwtToken(user);
@@ -84,7 +84,9 @@ export class AuthService {
     return code;
   }
 
-  public async exchangeAuthCode(code: string): Promise<IAccessToken | null> {
+  public async exchangeAuthCode(
+    code: string,
+  ): Promise<AccessTokenInterface | null> {
     const user = await this.cacheManager.get<User>(`code:${code}`);
     if (!user) return null;
 
