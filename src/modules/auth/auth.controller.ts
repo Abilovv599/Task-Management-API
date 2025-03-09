@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -9,27 +8,25 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 import type { Response } from 'express';
-
-import { GoogleAuthGuard } from '~/modules/auth/guards/google-auth.guard';
 
 import type { User } from '~/core/entities/user.entity';
 import { CurrentUser } from '~/decorators/current-user.decorator';
 import { SkipAuth } from '~/decorators/skip-auth.decorator';
 
 import { AuthService } from './auth.service';
+import { TwoFactorAuthCredentialsDto } from './dto/2FA-credentials.dto';
+import { OtpCodeDto } from './dto/OTP-code.dto';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { ExchangeCodeDto } from './dto/exchange-code.dto';
+import { GoogleAuthGuard } from './guards/google-auth.guard';
 import type { AccessTokenInterface } from './interfaces/access-token.interface';
+import type { Enabled2FAInterface } from './interfaces/enabled-2FA.interface';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @SkipAuth()
   @Post('register')
@@ -40,11 +37,10 @@ export class AuthController {
   @SkipAuth()
   @Get('login/google')
   @UseGuards(GoogleAuthGuard)
-  public googleAuth() {
+  public googleAuth(): void {
     return;
   }
 
-  // Google OAuth Callback
   @SkipAuth()
   @Get('login/google/callback')
   @UseGuards(GoogleAuthGuard)
@@ -52,25 +48,18 @@ export class AuthController {
     @CurrentUser() user: User,
     @Res() res: Response,
   ): Promise<void> {
-    const code = await this.authService.generateAuthCode(user);
+    const redirectUrl =
+      await this.authService.generateAuthCodeAndRedirectUrl(user);
 
-    const origin = this.configService.get<string>('FRONTEND_ORIGIN')!;
-
-    return res.redirect(`${origin}/auth/callback?code=${code}`);
+    return res.redirect(redirectUrl);
   }
 
   @SkipAuth()
   @Post('login/google/exchange-code')
   public async exchangeCode(
     @Body() { code }: ExchangeCodeDto,
-  ): Promise<AccessTokenInterface> {
-    if (!code) throw new BadRequestException('Code is required');
-
-    const accessToken = await this.authService.exchangeAuthCode(code);
-
-    if (!accessToken) throw new BadRequestException('Invalid or expired code');
-
-    return accessToken;
+  ): Promise<AccessTokenInterface | null> {
+    return await this.authService.exchangeAuthCode(code);
   }
 
   @SkipAuth()
@@ -78,12 +67,38 @@ export class AuthController {
   @Post('login')
   public signIn(
     @Body() authCredentialsDto: AuthCredentialsDto,
-  ): Promise<AccessTokenInterface> {
+  ): Promise<AccessTokenInterface | Enabled2FAInterface> {
     return this.authService.signIn(authCredentialsDto);
   }
 
   @Get('profile')
   public getProfile(@CurrentUser() user: User): User {
     return user;
+  }
+
+  @Post('generate-2fa-secret')
+  public generate2FASecret(@CurrentUser() user: User) {
+    return this.authService.generate2FASecret(user);
+  }
+
+  @Post('enable-2fa')
+  public enable2FA(@CurrentUser() user: User, @Body() { otpCode }: OtpCodeDto) {
+    return this.authService.enable2FA(user, otpCode);
+  }
+
+  @Post('disable-2fa')
+  public disable2FA(
+    @CurrentUser() user: User,
+    @Body() { otpCode }: OtpCodeDto,
+  ) {
+    return this.authService.disable2FA(user, otpCode);
+  }
+
+  @SkipAuth()
+  @Post('login/2fa')
+  public singInWith2FA(
+    @Body() twoFactorAuthCredentialsDto: TwoFactorAuthCredentialsDto,
+  ) {
+    return this.authService.singInWith2FA(twoFactorAuthCredentialsDto);
   }
 }

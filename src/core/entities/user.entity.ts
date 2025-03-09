@@ -15,6 +15,16 @@ export class User {
   @Exclude({ toPlainOnly: true })
   password?: string;
 
+  @Exclude({ toPlainOnly: true })
+  @Column({ nullable: true })
+  twoFactorSecret?: string;
+
+  @Column({ default: false })
+  isTwoFactorEnabled: boolean;
+
+  @Column({ default: false })
+  isOAuthUser: boolean;
+
   @OneToMany(() => Task, (task) => task.user, { eager: true })
   tasks: Task[];
 }

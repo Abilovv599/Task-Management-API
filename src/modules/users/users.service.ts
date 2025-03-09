@@ -43,7 +43,7 @@ export class UsersService {
       throw new ConflictException(`User with email ${email} already exists`);
     }
 
-    const newUser = this.usersRepository.create({ email });
+    const newUser = this.usersRepository.create({ email, isOAuthUser: true });
 
     return await this.usersRepository.save(newUser);
   }
@@ -60,5 +60,9 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  public async updateUser(user: User): Promise<User> {
+    return await this.usersRepository.save(user);
   }
 }
