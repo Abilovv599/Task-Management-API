@@ -6,9 +6,13 @@ import { PassportModule } from '@nestjs/passport';
 
 import { UsersModule } from '~/modules/users/users.module';
 
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { TwoFactorAuthController } from './controllers/2FA.controller';
+import { AuthController } from './controllers/auth.controller';
+import { GoogleAuthController } from './controllers/google-auth.controller';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { TwoFactorAuthService } from './services/2FA.service';
+import { AuthService } from './services/auth.service';
+import { GoogleAuthService } from './services/google-auth.service';
 import { GoogleStrategy } from './strategies/google-auth.strategy';
 import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
 
@@ -27,9 +31,11 @@ import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
       }),
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, TwoFactorAuthController, GoogleAuthController],
   providers: [
     AuthService,
+    TwoFactorAuthService,
+    GoogleAuthService,
     JwtAuthStrategy,
     GoogleStrategy,
     {

@@ -4,16 +4,15 @@ import { PassportStrategy } from '@nestjs/passport';
 
 import { Strategy, VerifyCallback } from 'passport-google-oauth2';
 
-import { AuthService } from '~/modules/auth/auth.service';
-
 import type { User } from '~/core/entities/user.entity';
 
 import type { GoogleProfileInterface } from '../interfaces/google-profile.interface';
+import { GoogleAuthService } from '../services/google-auth.service';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
-    private readonly authService: AuthService,
+    private readonly googleAuthService: GoogleAuthService,
     readonly configService: ConfigService,
   ) {
     super({
@@ -30,7 +29,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     profile: GoogleProfileInterface,
     cb: VerifyCallback,
   ): Promise<User> {
-    const user = await this.authService.validateGoogleUser(profile.email);
+    const user = await this.googleAuthService.validateGoogleUser(profile.email);
 
     cb(null, user);
 
