@@ -34,17 +34,13 @@ export class AuthService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
-  public async validateUser(
-    authCredentialsDto: AuthCredentialsDto,
-  ): Promise<User> {
+  public async validateUser(authCredentialsDto: AuthCredentialsDto): Promise<User> {
     const { email, password } = authCredentialsDto;
 
     const user = await this.usersService.getUserByEmail(email);
 
     if (!user) {
-      const error = new NotFoundException(
-        `User with username ${email} not found`,
-      );
+      const error = new NotFoundException(`User with username ${email} not found`);
       throw new UnauthorizedException(error.message);
     }
 
@@ -99,9 +95,7 @@ export class AuthService {
     return `${origin}/auth/callback?code=${code}`;
   }
 
-  public async exchangeAuthCode(
-    code: string,
-  ): Promise<AccessTokenInterface | null> {
+  public async exchangeAuthCode(code: string): Promise<AccessTokenInterface | null> {
     const user = await this.cacheManager.get<User>(`code:${code}`);
     if (!user) return null;
 
@@ -121,11 +115,7 @@ export class AuthService {
 
     const secret = authenticator.generateSecret();
 
-    const otpAuthUrl = authenticator.keyuri(
-      user.email,
-      'Task Management',
-      secret,
-    );
+    const otpAuthUrl = authenticator.keyuri(user.email, 'Task Management', secret);
 
     const qrCodeUrl = await toDataURL(otpAuthUrl);
 
@@ -135,18 +125,13 @@ export class AuthService {
     return { qrCodeUrl };
   }
 
-  public async enable2FA(
-    user: User,
-    otpCode: string,
-  ): Promise<{ message: string }> {
+  public async enable2FA(user: User, otpCode: string): Promise<{ message: string }> {
     if (user.isOAuthUser) {
       throw new BadRequestException("OAuth user's can't enable 2FA");
     }
 
     if (!user.twoFactorSecret) {
-      throw new UnauthorizedException(
-        '2FA secret not found. Generate it first.',
-      );
+      throw new UnauthorizedException('2FA secret not found. Generate it first.');
     }
 
     this.verify2FAToken(user, otpCode);
@@ -173,8 +158,7 @@ export class AuthService {
   }
 
   public async disable2FA(user: User, otpCode: string) {
-    if (!user.isTwoFactorEnabled)
-      throw new UnauthorizedException('2FA is not set up for this account.');
+    if (!user.isTwoFactorEnabled) throw new UnauthorizedException('2FA is not set up for this account.');
 
     this.verify2FAToken(user, otpCode);
 
@@ -186,10 +170,7 @@ export class AuthService {
     return { message: '2FA disabled successfully.' };
   }
 
-  public async singInWith2FA({
-    email,
-    otpCode,
-  }: TwoFactorAuthCredentialsDto): Promise<AccessTokenInterface> {
+  public async singInWith2FA({ email, otpCode }: TwoFactorAuthCredentialsDto): Promise<AccessTokenInterface> {
     const user = await this.usersService.getUserByEmail(email);
 
     if (!user) throw new UnauthorizedException('User not found.');

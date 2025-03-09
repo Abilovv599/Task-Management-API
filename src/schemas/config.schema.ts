@@ -22,9 +22,7 @@ export interface IConfigSchema {
 }
 
 export const configValidationSchema = Joi.object<IConfigSchema>({
-  NODE_ENV: Joi.string()
-    .valid('development', 'production', 'test')
-    .default('development'),
+  NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
 
   DB_TYPE: Joi.string().default('postgres'),
   DB_NAME: Joi.string().required(),

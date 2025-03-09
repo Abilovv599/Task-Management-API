@@ -13,10 +13,7 @@ export class TasksRepository extends Repository<Task> {
     super(Task, dataSource.createEntityManager());
   }
 
-  public getTasks(
-    filterDto: GetFilteredTasksDto,
-    user?: User,
-  ): Promise<Task[]> {
+  public getTasks(filterDto: GetFilteredTasksDto, user?: User): Promise<Task[]> {
     const { status, search } = filterDto;
 
     const query = this.createQueryBuilder('tasks');

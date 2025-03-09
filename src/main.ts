@@ -34,9 +34,7 @@ async function bootstrap() {
 
   const logger = new Logger('Bootstrap', { timestamp: true });
 
-  logger.log(
-    `Application running in "${environment}" mode on http://localhost:${port}`,
-  );
+  logger.log(`Application running in "${environment}" mode on http://localhost:${port}`);
 }
 
 bootstrap().catch((error) => {

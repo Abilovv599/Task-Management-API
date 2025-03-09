@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
 import type { Task } from '~/core/entities/task.entity';
 import type { User } from '~/core/entities/user.entity';
@@ -28,18 +19,12 @@ export class TasksController {
   }
 
   @Get('user-tasks')
-  public getUsersTasks(
-    @Query() filterDto: GetFilteredTasksDto,
-    @CurrentUser() user: User,
-  ): Promise<Task[]> {
+  public getUsersTasks(@Query() filterDto: GetFilteredTasksDto, @CurrentUser() user: User): Promise<Task[]> {
     return this.tasksService.getTasks(filterDto, user);
   }
 
   @Get('user-task/:id')
-  public getUserTaskById(
-    @Param('id') id: string,
-    @CurrentUser() user: User,
-  ): Promise<Task> {
+  public getUserTaskById(@Param('id') id: string, @CurrentUser() user: User): Promise<Task> {
     return this.tasksService.getTaskById(id, user);
   }
 
@@ -49,10 +34,7 @@ export class TasksController {
   }
 
   @Post()
-  public createTask(
-    @Body() createTaskDto: CreateTaskDto,
-    @CurrentUser() user: User,
-  ): Promise<Task> {
+  public createTask(@Body() createTaskDto: CreateTaskDto, @CurrentUser() user: User): Promise<Task> {
     return this.tasksService.createTask(createTaskDto, user);
   }
 
@@ -66,10 +48,7 @@ export class TasksController {
   }
 
   @Delete(':id')
-  public deleteTask(
-    @Param('id') id: string,
-    @CurrentUser() user: User,
-  ): Promise<void> {
+  public deleteTask(@Param('id') id: string, @CurrentUser() user: User): Promise<void> {
     return this.tasksService.deleteTask(id, user);
   }
 }

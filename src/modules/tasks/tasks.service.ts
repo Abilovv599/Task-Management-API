@@ -12,10 +12,7 @@ import { TasksRepository } from './tasks.repository';
 export class TasksService {
   constructor(private tasksRepository: TasksRepository) {}
 
-  public async getTasks(
-    filterDto: GetFilteredTasksDto,
-    user?: User,
-  ): Promise<Task[]> {
+  public async getTasks(filterDto: GetFilteredTasksDto, user?: User): Promise<Task[]> {
     return this.tasksRepository.getTasks(filterDto, user);
   }
 
@@ -45,11 +42,7 @@ export class TasksService {
     }
   }
 
-  public async updateTaskStatus(
-    id: string,
-    { status }: UpdateTaskStatusDto,
-    user: User,
-  ): Promise<Task> {
+  public async updateTaskStatus(id: string, { status }: UpdateTaskStatusDto, user: User): Promise<Task> {
     const task = await this.getTaskById(id, user);
 
     task.status = status;

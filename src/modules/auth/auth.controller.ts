@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
 
 import type { Response } from 'express';
 
@@ -44,21 +35,15 @@ export class AuthController {
   @SkipAuth()
   @Get('login/google/callback')
   @UseGuards(GoogleAuthGuard)
-  public async googleAuthRedirect(
-    @CurrentUser() user: User,
-    @Res() res: Response,
-  ): Promise<void> {
-    const redirectUrl =
-      await this.authService.generateAuthCodeAndRedirectUrl(user);
+  public async googleAuthRedirect(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
+    const redirectUrl = await this.authService.generateAuthCodeAndRedirectUrl(user);
 
     return res.redirect(redirectUrl);
   }
 
   @SkipAuth()
   @Post('login/google/exchange-code')
-  public async exchangeCode(
-    @Body() { code }: ExchangeCodeDto,
-  ): Promise<AccessTokenInterface | null> {
+  public async exchangeCode(@Body() { code }: ExchangeCodeDto): Promise<AccessTokenInterface | null> {
     return await this.authService.exchangeAuthCode(code);
   }
 
@@ -87,18 +72,13 @@ export class AuthController {
   }
 
   @Post('disable-2fa')
-  public disable2FA(
-    @CurrentUser() user: User,
-    @Body() { otpCode }: OtpCodeDto,
-  ) {
+  public disable2FA(@CurrentUser() user: User, @Body() { otpCode }: OtpCodeDto) {
     return this.authService.disable2FA(user, otpCode);
   }
 
   @SkipAuth()
   @Post('login/2fa')
-  public singInWith2FA(
-    @Body() twoFactorAuthCredentialsDto: TwoFactorAuthCredentialsDto,
-  ) {
+  public singInWith2FA(@Body() twoFactorAuthCredentialsDto: TwoFactorAuthCredentialsDto) {
     return this.authService.singInWith2FA(twoFactorAuthCredentialsDto);
   }
 }
