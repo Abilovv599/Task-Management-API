@@ -4,7 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { createSwagger } from '~/configs/swagger.config';
 import { AllExceptionsFilter } from '~/filter/all-exceptions.filter';
-import { TransformInterceptor } from '~/interceptors/tranfsorm.interceptor';
+import { TransformInterceptor } from '~/interceptors/transform.interceptor';
 
 import { AppModule } from './modules/app.module';
 
