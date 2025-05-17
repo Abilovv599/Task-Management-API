@@ -1,4 +1,4 @@
-import { IBaseResponseModel } from '~/common/base-response.model';
+import { IBaseResponseModel } from '~/models/base-response.model';
 
 export interface IErrorResponseModel extends IBaseResponseModel {
   path: string;

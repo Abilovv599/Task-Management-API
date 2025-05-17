@@ -3,7 +3,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nes
 import { instanceToPlain } from 'class-transformer';
 import { map } from 'rxjs/operators';
 
-import { ISuccessResponseModel } from '~/common/success-response.model';
+import { ISuccessResponseModel } from '~/models/success-response.model';
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {

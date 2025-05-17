@@ -4,7 +4,7 @@ import { BaseExceptionFilter } from '@nestjs/core';
 import { Request, Response } from 'express';
 import { TypeORMError } from 'typeorm';
 
-import { IErrorResponseModel } from '~/common/error-response.model';
+import { IErrorResponseModel } from '~/models/error-response.model';
 
 @Catch()
 export class AllExceptionsFilter extends BaseExceptionFilter {

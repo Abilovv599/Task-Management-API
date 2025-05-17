@@ -1,99 +1,217 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Task Management API - Development Guidelines
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This document provides guidelines for developing and maintaining the Task Management API project.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Build/Configuration Instructions
 
-## Description
+### Prerequisites
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Node.js v22.13.1 (managed via Volta)
+- Yarn package manager
+- PostgreSQL database
 
-## Project setup
+### Environment Setup
 
-```bash
-$ yarn install
+1. Create a `.env` file in the project root with the following variables:
+   ```
+   PORT=3000
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USERNAME=postgres
+   DB_PASSWORD=postgres
+   DB_DATABASE=task_management
+   JWT_SECRET=your_jwt_secret
+   JWT_EXPIRATION=3600
+   ```
+
+2. Install dependencies:
+   ```bash
+   yarn install
+   ```
+
+3. Database setup:
+    - The project uses TypeORM with PostgreSQL
+    - You can use the provided docker-compose.yml to start a PostgreSQL instance:
+      ```bash
+      docker-compose up -d
+      ```
+
+### Running the Application
+
+- Development mode: `yarn start:dev`
+- Debug mode: `yarn start:debug`
+- Production mode: `yarn build && yarn start:prod`
+
+## Testing Information
+
+### Test Configuration
+
+The project uses Jest for testing. The configuration is in `jest.config.js` and includes:
+
+- TypeScript support via ts-jest
+- Path alias mapping for the `~/*` pattern
+- Test files matching the pattern `*.spec.ts`
+
+### Running Tests
+
+- Run all tests: `yarn test`
+- Run tests in watch mode: `yarn test:watch`
+- Run tests with coverage: `yarn test:cov`
+- Debug tests: `yarn test:debug`
+
+### Writing Tests
+
+Tests should be placed in the same directory as the file they're testing, with the `.spec.ts` extension.
+
+#### Example: Testing a Service
+
+Here's an example of testing the TasksService:
+
+```typescript
+import { Test, TestingModule } from '@nestjs/testing';
+import { NotFoundException } from '@nestjs/common';
+
+import { TASK_STATUS } from '~/core/enums/task-status.enum';
+import { TasksService } from './tasks.service';
+import { TasksRepository } from './tasks.repository';
+
+// Mock the repository
+const mockTasksRepository = () => ({
+  findOne: jest.fn(),
+  create: jest.fn(),
+  save: jest.fn(),
+  // Add other methods as needed
+});
+
+// Create a mock user
+const mockUser = {
+  id: 'test-user-id',
+  email: 'test@example.com',
+  isTwoFactorEnabled: false,
+  isOAuthUser: false,
+  tasks: [],
+};
+
+describe('TasksService', () => {
+  let tasksService: TasksService;
+  let tasksRepository;
+
+  beforeEach(async () => {
+    // Set up the test module
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        TasksService,
+        { provide: TasksRepository, useFactory: mockTasksRepository },
+      ],
+    }).compile();
+
+    tasksService = module.get<TasksService>(TasksService);
+    tasksRepository = module.get<TasksRepository>(TasksRepository);
+  });
+
+  describe('getTaskById', () => {
+    it('should return a task when found', async () => {
+      const mockTask = { id: 'task-id', title: 'Test Task' };
+      tasksRepository.findOne.mockResolvedValue(mockTask);
+
+      const result = await tasksService.getTaskById('task-id', mockUser);
+      expect(result).toEqual(mockTask);
+    });
+
+    it('should throw NotFoundException when task not found', async () => {
+      tasksRepository.findOne.mockResolvedValue(null);
+
+      await expect(tasksService.getTaskById('task-id', mockUser))
+        .rejects.toThrow(NotFoundException);
+    });
+  });
+});
 ```
 
-## Compile and run the project
+#### Testing Controllers
 
-```bash
-# development
-$ yarn run start
+When testing controllers, you can use the `supertest` library with NestJS's `fastify` platform:
 
-# watch mode
-$ yarn run start:dev
+```typescript
+import * as request from 'supertest';
+import { Test } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import { TasksController } from './tasks.controller';
+import { TasksService } from './tasks.service';
 
-# production mode
-$ yarn run start:prod
+describe('TasksController (e2e)', () => {
+  let app: INestApplication;
+  const tasksService = { getTasks: () => ['test'] };
+
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+      controllers: [TasksController],
+      providers: [{ provide: TasksService, useValue: tasksService }],
+    }).compile();
+
+    app = moduleRef.createNestApplication();
+    await app.init();
+  });
+
+  it('/GET tasks', () => {
+    return request(app.getHttpServer())
+      .get('/tasks')
+      .expect(200)
+      .expect(tasksService.getTasks());
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+});
 ```
 
-## Run tests
+## Additional Development Information
 
-```bash
-# unit tests
-$ yarn run test
+### Project Structure
 
-# e2e tests
-$ yarn run test:e2e
+- `src/modules/` - Contains feature modules (tasks, auth, users)
+- `src/core/` - Contains entities, enums, and other core components
+- `src/models/` - Contains models
+- `src/interceptors/` - Contains interceptors for request/response handling
+- `src/filters/` - Contains exception filters
+- `src/middlewares/` - Contains middleware components
+- `src/configs/` - Contains configuration files
 
-# test coverage
-$ yarn run test:cov
+### API Documentation
+
+The API is documented using Swagger. When running in development mode, you can access the Swagger UI at:
+
+```
+http://localhost:3000/v1/api/docs
 ```
 
-## Deployment
+### Code Style
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- The project uses ESLint and Prettier for code formatting
+- Run `yarn lint` to check for linting issues
+- Run `yarn format` to automatically format code
+- Pre-commit hooks are set up with Husky to ensure code quality
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Authentication
 
-```bash
-$ yarn install -g mau
-$ mau deploy
-```
+- The project uses JWT for authentication
+- Google OAuth is supported
+- Two-factor authentication is available
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Database
 
-## Resources
+- The project uses TypeORM with PostgreSQL
+- Entity relationships:
+    - User has many Tasks (one-to-many)
+    - Task belongs to a User (many-to-one)
 
-Check out a few resources that may come in handy when working with NestJS:
+### Error Handling
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- Global exception filter is used to handle all exceptions
+- Responses are standardized using interceptors
 
-## Support
+### Caching
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- The project uses NestJS's cache manager for caching
+- Cache is configured globally
