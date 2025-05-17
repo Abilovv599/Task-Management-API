@@ -21,7 +21,7 @@ export function createSwagger(app: NestExpressApplication) {
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, documentFactory, {
+  SwaggerModule.setup('v1/api/docs', app, documentFactory, {
     swaggerOptions: {
       persistAuthorization: true,
     },
