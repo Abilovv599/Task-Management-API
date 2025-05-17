@@ -1,15 +1,25 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 
+
+
 import { authenticator } from 'otplib';
 import { toDataURL } from 'qrcode';
 
+
+
 import { UsersService } from '~/modules/users/users.service';
 
-import type { User } from '~/core/entities/user.entity';
+import type { User } from '~/common/entities/user.entity';
+
+
 
 import { TwoFactorAuthCredentialsDto } from '../dto/2FA-credentials.dto';
 import type { AccessTokenInterface } from '../interfaces/access-token.interface';
 import { AuthService } from './auth.service';
+
+
+
+
 
 @Injectable()
 export class TwoFactorAuthService {

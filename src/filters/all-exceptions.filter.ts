@@ -1,10 +1,18 @@
 import { ArgumentsHost, Catch, HttpException, HttpStatus } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 
+
+
 import { Request, Response } from 'express';
 import { TypeORMError } from 'typeorm';
 
-import { IErrorResponseModel } from '~/models/error-response.model';
+
+
+import { ErrorResponseDto } from '~/common/dtos/error-response.dto';
+
+
+
+
 
 @Catch()
 export class AllExceptionsFilter extends BaseExceptionFilter {
@@ -13,7 +21,7 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    const errorResponse: IErrorResponseModel = {
+    const errorResponse: ErrorResponseDto = {
       statusCode: 500,
       path: request.url,
       message: '',

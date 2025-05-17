@@ -1,4 +1,4 @@
-export interface IBaseResponseModel {
+export class BaseResponseDto {
   isSuccess: boolean;
   message?: string;
   statusCode?: number;

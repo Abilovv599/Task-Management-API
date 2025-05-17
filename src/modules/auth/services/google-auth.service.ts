@@ -2,15 +2,25 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+
+
 import { Cache } from 'cache-manager';
 import { randomBytes } from 'crypto';
 
+
+
 import { UsersService } from '~/modules/users/users.service';
 
-import type { User } from '~/core/entities/user.entity';
+import type { User } from '~/common/entities/user.entity';
+
+
 
 import type { AccessTokenInterface } from '../interfaces/access-token.interface';
 import { AuthService } from './auth.service';
+
+
+
+
 
 @Injectable()
 export class GoogleAuthService {

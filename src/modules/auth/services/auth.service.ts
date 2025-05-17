@@ -1,15 +1,25 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
+
+
 import { UsersService } from '~/modules/users/users.service';
 
-import type { User } from '~/core/entities/user.entity';
+
+
+import type { User } from '~/common/entities/user.entity';
 import { comparePassword } from '~/lib/bcrypt';
+
+
 
 import { AuthCredentialsDto } from '../dto/auth-credentials.dto';
 import type { AccessTokenInterface } from '../interfaces/access-token.interface';
 import type { Enabled2FAInterface } from '../interfaces/enabled-2FA.interface';
 import type { JwtPayloadInterface } from '../interfaces/jwt-payload.interface';
+
+
+
+
 
 @Injectable()
 export class AuthService {
