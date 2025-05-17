@@ -1,17 +1,9 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 
-
-
 import { instanceToPlain } from 'class-transformer';
 import { map } from 'rxjs/operators';
 
-
-
 import { ResultResponseDto } from '~/common/dtos/result-response.dto';
-
-
-
-
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {

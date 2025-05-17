@@ -1,21 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-
-
 import type { User } from '~/common/entities/user.entity';
 import { CurrentUser } from '~/decorators/current-user.decorator';
 import { SkipAuth } from '~/decorators/skip-auth.decorator';
 
-
-
 import { TwoFactorAuthCredentialsDto } from '../dto/2FA-credentials.dto';
 import { OtpCodeDto } from '../dto/OTP-code.dto';
 import { TwoFactorAuthService } from '../services/2FA.service';
-
-
-
-
 
 @ApiTags('2FA')
 @Controller('auth/2FA')

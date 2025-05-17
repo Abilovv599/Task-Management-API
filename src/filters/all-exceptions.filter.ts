@@ -1,18 +1,10 @@
 import { ArgumentsHost, Catch, HttpException, HttpStatus } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 
-
-
 import { Request, Response } from 'express';
 import { TypeORMError } from 'typeorm';
 
-
-
 import { ErrorResponseDto } from '~/common/dtos/error-response.dto';
-
-
-
-
 
 @Catch()
 export class AllExceptionsFilter extends BaseExceptionFilter {

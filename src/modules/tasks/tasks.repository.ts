@@ -1,21 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-
-
 import { DataSource, Repository } from 'typeorm';
-
-
 
 import { Task } from '~/common/entities/task.entity';
 import type { User } from '~/common/entities/user.entity';
 
-
-
 import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
-
-
-
-
 
 @Injectable()
 export class TasksRepository extends Repository<Task> {
