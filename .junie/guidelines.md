@@ -105,14 +105,14 @@ describe('TasksService', () => {
     it('should return a task when found', async () => {
       const mockTask = { id: 'task-id', title: 'Test Task' };
       tasksRepository.findOne.mockResolvedValue(mockTask);
-      
+
       const result = await tasksService.getTaskById('task-id', mockUser);
       expect(result).toEqual(mockTask);
     });
 
     it('should throw NotFoundException when task not found', async () => {
       tasksRepository.findOne.mockResolvedValue(null);
-      
+
       await expect(tasksService.getTaskById('task-id', mockUser))
         .rejects.toThrow(NotFoundException);
     });
@@ -171,7 +171,7 @@ describe('TasksController (e2e)', () => {
 ### API Documentation
 The API is documented using Swagger. When running in development mode, you can access the Swagger UI at:
 ```
-http://localhost:3000/api/docs
+http://localhost:3000/v1/api/docs
 ```
 
 ### Code Style
