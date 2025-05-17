@@ -8,15 +8,16 @@ import { ISuccessResponseModel } from '~/common/success-reponse.model';
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, next: CallHandler) {
-    return next.handle().pipe(
-      map((data) => {
-        const successResponse: ISuccessResponseModel<typeof data> = {
-          isSuccess: true,
-          data: instanceToPlain(data),
-        };
-
-        return successResponse;
-      }),
-    );
+    return next
+      .handle()
+      .pipe(
+        map(
+          (data): ISuccessResponseModel<typeof data> => ({
+            data: instanceToPlain(data),
+            isSuccess: true,
+            timestamp: new Date().toISOString(),
+          }),
+        ),
+      );
   }
 }

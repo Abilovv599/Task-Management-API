@@ -7,5 +7,4 @@ export interface IErrorResponseModel extends IBaseResponseModel {
   error: {
     errors: string[];
   };
-  timestamp: string;
 }
