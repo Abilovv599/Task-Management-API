@@ -1,4 +1,4 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
@@ -13,10 +13,16 @@ async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  app.enableVersioning({
+    type: VersioningType.URI,
+    prefix: 'v',
+    defaultVersion: '1',
+  });
+
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
-  app.setGlobalPrefix('/v1/api');
+  app.setGlobalPrefix('api');
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
@@ -38,7 +44,7 @@ async function bootstrap() {
 
   const logger = new Logger('Bootstrap', { timestamp: true });
 
-  logger.log(`Application running in "${environment}" mode on http://localhost:${port}/v1/api/docs`);
+  logger.log(`Application running in "${environment}" mode on http://localhost:${port}/api/docs`);
 }
 
 bootstrap().catch((error) => {
