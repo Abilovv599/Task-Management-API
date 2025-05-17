@@ -24,17 +24,20 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
       timestamp: new Date().toISOString(),
     };
 
-    // Add more Prisma Error Types if you want
     if (exception instanceof HttpException) {
       errorResponse.statusCode = exception.getStatus();
       errorResponse.message = exception.message;
 
-      const messages = exception.getResponse();
+      const message = exception.getResponse();
 
-      if (typeof messages === 'object' && 'message' in messages) {
-        errorResponse.error.errors = messages.message as string[];
-      } else if (typeof messages === 'string') {
-        errorResponse.error.errors.push(messages);
+      if (typeof message === 'object' && 'message' in message) {
+        if (typeof message.message === 'string') {
+          errorResponse.error.errors.push(message.message);
+        } else {
+          errorResponse.error.errors = message.message as string[];
+        }
+      } else if (typeof message === 'string') {
+        errorResponse.error.errors.push(message);
       }
     } else if (exception instanceof TypeORMError) {
       errorResponse.statusCode = HttpStatus.BAD_REQUEST;

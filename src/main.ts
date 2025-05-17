@@ -16,7 +16,7 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('/v1/api');
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
@@ -38,7 +38,7 @@ async function bootstrap() {
 
   const logger = new Logger('Bootstrap', { timestamp: true });
 
-  logger.log(`Application running in "${environment}" mode on http://localhost:${port}`);
+  logger.log(`Application running in "${environment}" mode on http://localhost:${port}/v1/api/swagger`);
 }
 
 bootstrap().catch((error) => {
