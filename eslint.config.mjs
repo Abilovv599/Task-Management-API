@@ -2,10 +2,6 @@ import eslint from '@eslint/js';
 import globals from 'globals';
 import tsEslint from 'typescript-eslint';
 
-
-
-
-
 export default tsEslint.config(
   eslint.configs.recommended,
   tsEslint.configs.recommendedTypeChecked,
