@@ -1,6 +1,10 @@
-import globals from 'globals';
 import eslint from '@eslint/js';
+import globals from 'globals';
 import tsEslint from 'typescript-eslint';
+
+
+
+
 
 export default tsEslint.config(
   eslint.configs.recommended,
@@ -37,7 +41,7 @@ export default tsEslint.config(
   },
   // Test file override
   {
-    files: ['**/*.spec.ts', '**/*.test.ts'],
+    files: ['**/*.spec.ts', '**/*.test.ts', '**/test/**'],
     rules: {
       '@typescript-eslint/unbound-method': 'off',
     },

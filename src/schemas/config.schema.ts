@@ -1,13 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-
-
 import Joi from 'joi';
 import { StringValue } from 'ms';
-
-
-
-
 
 export interface IConfigSchema {
   NODE_ENV: 'development' | 'production' | 'test';

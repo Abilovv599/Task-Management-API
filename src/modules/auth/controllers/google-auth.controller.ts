@@ -1,26 +1,16 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 
-
-
 import { Response } from 'express';
-
-
 
 import { User } from '~/common/entities/user.entity';
 import { DataResult } from '~/common/models/data-result.model';
 import { CurrentUser } from '~/decorators/current-user.decorator';
 import { SkipAuth } from '~/decorators/skip-auth.decorator';
 
-
-
 import { ExchangeCodeDto } from '../dto/exchange-code.dto';
 import { GoogleAuthGuard } from '../guards/google-auth.guard';
 import { IAccessToken } from '../interfaces/access-token.interface';
 import { GoogleAuthService } from '../services/google-auth.service';
-
-
-
-
 
 @Controller('auth')
 export class GoogleAuthController {

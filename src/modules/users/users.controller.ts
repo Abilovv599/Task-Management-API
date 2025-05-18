@@ -1,20 +1,12 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
-
-
 import { PaginationDto } from '~/common/dtos/pagination.dto';
 import { User } from '~/common/entities/user.entity';
 import { DataResult } from '~/common/models/data-result.model';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 
-
-
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
-
-
-
-
 
 @Controller('users')
 export class UsersController {
