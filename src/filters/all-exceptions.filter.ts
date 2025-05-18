@@ -1,54 +1,42 @@
 import { ArgumentsHost, Catch, HttpException, HttpStatus } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 
-import { Request, Response } from 'express';
+
+
+import { Response } from 'express';
 import { TypeORMError } from 'typeorm';
 
-import { ErrorResponseDto } from '~/common/dtos/error-response.dto';
+
+
+import { ErrorResult } from '~/common/models/error-result.model';
+
+
+
+
 
 @Catch()
 export class AllExceptionsFilter extends BaseExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
 
-    const errorResponse: ErrorResponseDto = {
-      statusCode: 500,
-      path: request.url,
-      message: '',
-      error: {
-        errors: [],
-      },
-      isSuccess: false,
-      timestamp: new Date().toISOString(),
-    };
+    const errorResponse = new ErrorResult(HttpStatus.INTERNAL_SERVER_ERROR, 'Internal Server Error');
 
     if (exception instanceof HttpException) {
-      errorResponse.statusCode = exception.getStatus();
-      errorResponse.message = exception.message;
+      errorResponse.error.statusCode = exception.getStatus();
+      errorResponse.error.message = exception.message;
 
-      const message = exception.getResponse();
+      const details = exception.getResponse();
 
-      if (typeof message === 'object' && 'message' in message) {
-        if (typeof message.message === 'string') {
-          errorResponse.error.errors.push(message.message);
-        } else {
-          errorResponse.error.errors = message.message as string[];
-        }
-      } else if (typeof message === 'string') {
-        errorResponse.error.errors.push(message);
+      if (typeof details === 'object' && 'message' in details && Array.isArray(details.message)) {
+        errorResponse.error.details = details.message;
       }
     } else if (exception instanceof TypeORMError) {
-      errorResponse.statusCode = HttpStatus.BAD_REQUEST;
-      errorResponse.message = exception.message;
-      errorResponse.error.errors.push(exception.message);
-    } else {
-      errorResponse.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-      errorResponse.message = 'Internal Server Error';
+      errorResponse.error.statusCode = HttpStatus.BAD_REQUEST;
+      errorResponse.error.message = exception.message;
     }
 
-    response.status(errorResponse.statusCode).json(errorResponse);
+    response.status(errorResponse.error.statusCode).json(errorResponse);
 
     super.catch(exception, host);
   }

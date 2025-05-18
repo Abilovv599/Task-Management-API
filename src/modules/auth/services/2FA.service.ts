@@ -1,15 +1,28 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 
+
+
 import { authenticator } from 'otplib';
 import { toDataURL } from 'qrcode';
 
+
+
+import { IQrCodeUrl } from '~/modules/auth/interfaces/qr-code-url.interface';
 import { UsersService } from '~/modules/users/users.service';
 
-import type { User } from '~/common/entities/user.entity';
+
+
+import { User } from '~/common/entities/user.entity';
+
+
 
 import { TwoFactorAuthCredentialsDto } from '../dto/2FA-credentials.dto';
-import type { AccessTokenInterface } from '../interfaces/access-token.interface';
+import { IAccessToken } from '../interfaces/access-token.interface';
 import { AuthService } from './auth.service';
+
+
+
+
 
 @Injectable()
 export class TwoFactorAuthService {
@@ -18,7 +31,7 @@ export class TwoFactorAuthService {
     private readonly authService: AuthService,
   ) {}
 
-  public async generate2FASecret(user: User) {
+  public async generate2FASecret(user: User): Promise<IQrCodeUrl> {
     if (user.isOAuthUser) {
       throw new BadRequestException("OAuth user's can't generate 2FA secret");
     }
@@ -35,7 +48,7 @@ export class TwoFactorAuthService {
     return { qrCodeUrl };
   }
 
-  public async enable2FA(user: User, otpCode: string): Promise<{ message: string }> {
+  public async enable2FA(user: User, otpCode: string): Promise<string> {
     if (user.isOAuthUser) {
       throw new BadRequestException("OAuth user's can't enable 2FA");
     }
@@ -49,7 +62,7 @@ export class TwoFactorAuthService {
     user.isTwoFactorEnabled = true;
     await this.usersService.updateUser(user);
 
-    return { message: '2FA enabled successfully.' };
+    return '2FA enabled successfully.';
   }
 
   public verifyOtpCode(user: User, token: string) {
@@ -67,7 +80,7 @@ export class TwoFactorAuthService {
     }
   }
 
-  public async disable2FA(user: User, otpCode: string) {
+  public async disable2FA(user: User, otpCode: string): Promise<string> {
     if (!user.isTwoFactorEnabled) throw new UnauthorizedException('2FA is not set up for this account.');
 
     this.verifyOtpCode(user, otpCode);
@@ -77,10 +90,10 @@ export class TwoFactorAuthService {
 
     await this.usersService.updateUser(user);
 
-    return { message: '2FA disabled successfully.' };
+    return '2FA disabled successfully.';
   }
 
-  public async singInWith2FA({ email, otpCode }: TwoFactorAuthCredentialsDto): Promise<AccessTokenInterface> {
+  public async singInWith2FA({ email, otpCode }: TwoFactorAuthCredentialsDto): Promise<IAccessToken> {
     const user = await this.usersService.getUserByEmail(email);
 
     if (!user) throw new UnauthorizedException('User not found.');

@@ -2,7 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-import type { IConfigSchema } from '~/schemas/config.schema';
+
+
+import { IConfigSchema } from '~/schemas/config.schema';
+
+
+
+
 
 @Module({
   imports: [

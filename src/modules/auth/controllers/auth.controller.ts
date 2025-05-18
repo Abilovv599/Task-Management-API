@@ -1,13 +1,22 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 
-import type { User } from '~/common/entities/user.entity';
+
+
+import { User } from '~/common/entities/user.entity';
+import { DataResult } from '~/common/models/data-result.model';
 import { CurrentUser } from '~/decorators/current-user.decorator';
 import { SkipAuth } from '~/decorators/skip-auth.decorator';
 
+
+
 import { AuthCredentialsDto } from '../dto/auth-credentials.dto';
-import type { AccessTokenInterface } from '../interfaces/access-token.interface';
-import type { Enabled2FAInterface } from '../interfaces/enabled-2FA.interface';
+import { IAccessToken } from '../interfaces/access-token.interface';
+import { IEnabled2FA } from '../interfaces/enabled-2FA.interface';
 import { AuthService } from '../services/auth.service';
+
+
+
+
 
 @Controller('auth')
 export class AuthController {
@@ -15,21 +24,20 @@ export class AuthController {
 
   @SkipAuth()
   @Post('register')
-  public signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<User> {
-    return this.authService.signUp(authCredentialsDto);
+  public async signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<DataResult<User>> {
+    return new DataResult(await this.authService.signUp(authCredentialsDto));
   }
 
   @SkipAuth()
-  @HttpCode(HttpStatus.OK)
   @Post('login')
-  public signIn(
+  public async signIn(
     @Body() authCredentialsDto: AuthCredentialsDto,
-  ): Promise<AccessTokenInterface | Enabled2FAInterface> {
-    return this.authService.signIn(authCredentialsDto);
+  ): Promise<DataResult<IAccessToken | IEnabled2FA>> {
+    return new DataResult(await this.authService.signIn(authCredentialsDto));
   }
 
   @Get('profile')
-  public getProfile(@CurrentUser() user: User): User {
-    return user;
+  public getProfile(@CurrentUser() user: User): DataResult<User> {
+    return new DataResult(user);
   }
 }

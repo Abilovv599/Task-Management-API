@@ -1,17 +1,27 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
-import type { User } from '~/common/entities/user.entity';
+
+
+import { PaginationDto } from '~/common/dtos/pagination.dto';
+import { User } from '~/common/entities/user.entity';
+import { PaginatedList } from '~/common/models/paginated-list.model';
 import { hashPassword } from '~/lib/bcrypt';
+
+
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './users.repository';
+
+
+
+
 
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  public async getUsers(): Promise<User[]> {
-    return await this.usersRepository.find();
+  public async getUsers(paginationDto: PaginationDto): Promise<PaginatedList<User>> {
+    return await this.usersRepository.getUsers(paginationDto);
   }
 
   public async createUser(createUserDto: CreateUserDto): Promise<User> {

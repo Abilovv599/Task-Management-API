@@ -2,15 +2,27 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+
+
 import { Cache } from 'cache-manager';
 import { randomBytes } from 'crypto';
 
+
+
 import { UsersService } from '~/modules/users/users.service';
 
-import type { User } from '~/common/entities/user.entity';
 
-import type { AccessTokenInterface } from '../interfaces/access-token.interface';
+
+import { User } from '~/common/entities/user.entity';
+
+
+
+import { IAccessToken } from '../interfaces/access-token.interface';
 import { AuthService } from './auth.service';
+
+
+
+
 
 @Injectable()
 export class GoogleAuthService {
@@ -39,9 +51,9 @@ export class GoogleAuthService {
     return `${origin}/auth/callback?code=${code}`;
   }
 
-  public async exchangeAuthCode(code: string): Promise<AccessTokenInterface | null> {
+  public async exchangeAuthCode(code: string): Promise<IAccessToken> {
     const user = await this.cacheManager.get<User>(`code:${code}`);
-    if (!user) return null;
+    if (!user) throw new BadRequestException('Invalid or expired code');
 
     await this.cacheManager.del(`code:${code}`); // Remove after use
 

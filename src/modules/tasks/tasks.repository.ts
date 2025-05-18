@@ -1,20 +1,44 @@
 import { Injectable } from '@nestjs/common';
 
+
+
 import { DataSource, Repository } from 'typeorm';
 
+
+
+import { PaginationService } from '~/modules/common/services/pagination.service';
+
+
+
+import { PaginationDto } from '~/common/dtos/pagination.dto';
 import { Task } from '~/common/entities/task.entity';
-import type { User } from '~/common/entities/user.entity';
+import { User } from '~/common/entities/user.entity';
+import { PaginatedList } from '~/common/models/paginated-list.model';
+
+
 
 import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
 
+
+
+
+
 @Injectable()
 export class TasksRepository extends Repository<Task> {
-  constructor(readonly dataSource: DataSource) {
+  constructor(
+    readonly dataSource: DataSource,
+    private paginationService: PaginationService,
+  ) {
     super(Task, dataSource.createEntityManager());
   }
 
-  public getTasks(filterDto: GetFilteredTasksDto, user?: User): Promise<Task[]> {
+  public getTasks(
+    filterDto: GetFilteredTasksDto,
+    paginationDto: PaginationDto,
+    user?: User,
+  ): Promise<PaginatedList<Task>> {
     const { status, search } = filterDto;
+    const { page = 1, limit = 10 } = paginationDto;
 
     const query = this.createQueryBuilder('tasks');
 
@@ -34,7 +58,7 @@ export class TasksRepository extends Repository<Task> {
       );
     }
 
-    return query.getMany();
+    return this.paginationService.paginate<Task>(query, page, limit);
   }
 
   // public async getTasks(filterDto: GetFilteredTasksDto) {

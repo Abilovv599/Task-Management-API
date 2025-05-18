@@ -13,12 +13,4 @@ export class PaginationDto {
   @IsNumber()
   @Min(1)
   limit?: number = 10;
-
-  get skip(): number {
-    if (!this.page || !this.limit) {
-      return 0;
-    }
-
-    return (this.page - 1) * this.limit;
-  }
 }

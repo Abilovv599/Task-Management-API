@@ -1,3 +1,3 @@
-export interface AccessTokenInterface {
+export interface IAccessToken {
   accessToken: string;
 }
