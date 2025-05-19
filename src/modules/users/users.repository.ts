@@ -1,17 +1,27 @@
 import { Injectable } from '@nestjs/common';
 
+
+
 import { DataSource, Repository } from 'typeorm';
 
+
+
 import { PaginationService } from '~/modules/common/services/pagination.service';
+
+
 
 import { PaginationDto } from '~/common/dtos/pagination.dto';
 import { User } from '~/common/entities/user.entity';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 
+
+
+
+
 @Injectable()
 export class UsersRepository extends Repository<User> {
   constructor(
-    readonly dataSource: DataSource,
+    dataSource: DataSource,
     private readonly paginationService: PaginationService,
   ) {
     super(User, dataSource.createEntityManager());
