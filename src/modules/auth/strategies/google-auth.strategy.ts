@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 
 import { Strategy, VerifyCallback } from 'passport-google-oauth2';
 
-import { User } from '~/common/entities/user.entity';
+import { User } from '~/modules/users/entity/user.entity';
 
 import { IGoogleProfile } from '../interfaces/google-profile.interface';
 import { GoogleAuthService } from '../services/google-auth.service';

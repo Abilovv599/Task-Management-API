@@ -1,14 +1,15 @@
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { CreateUserDto } from '~/modules/users/dtos/create-user.dto';
+import { User } from '~/modules/users/entity/user.entity';
+import { Role } from '~/modules/users/enums/role.enum';
+
 import { PaginationDto } from '~/common/dtos/pagination.dto';
-import { User } from '~/common/entities/user.entity';
-import { Role } from '~/common/enums/role.enum';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 import * as bcryptLib from '~/lib/bcrypt';
 
-import { CreateUserDto } from './dto/create-user.dto';
-import { UsersRepository } from './users.repository';
+import { UsersRepository } from '../repository/users.repository';
 import { UsersService } from './users.service';
 
 // Mock the hashPassword function

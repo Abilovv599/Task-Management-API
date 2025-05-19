@@ -3,12 +3,11 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { authenticator } from 'otplib';
 import { toDataURL } from 'qrcode';
 
+import { TwoFactorAuthCredentialsDto } from '~/modules/auth/dtos/2FA-credentials.dto';
 import { IQrCodeUrl } from '~/modules/auth/interfaces/qr-code-url.interface';
-import { UsersService } from '~/modules/users/users.service';
+import { User } from '~/modules/users/entity/user.entity';
+import { UsersService } from '~/modules/users/services/users.service';
 
-import { User } from '~/common/entities/user.entity';
-
-import { TwoFactorAuthCredentialsDto } from '../dto/2FA-credentials.dto';
 import { IAccessToken } from '../interfaces/access-token.interface';
 import { AuthService } from './auth.service';
 

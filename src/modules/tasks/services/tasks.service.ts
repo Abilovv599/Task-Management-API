@@ -1,14 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { CreateTaskDto } from '~/modules/tasks/dtos/create-task.dto';
+import { GetFilteredTasksDto } from '~/modules/tasks/dtos/get-filtered-tasks.dto';
+import { UpdateTaskStatusDto } from '~/modules/tasks/dtos/update-task-status.dto';
+import { Task } from '~/modules/tasks/entity/task.entity';
+import { User } from '~/modules/users/entity/user.entity';
+
 import { PaginationDto } from '~/common/dtos/pagination.dto';
-import { Task } from '~/common/entities/task.entity';
-import { User } from '~/common/entities/user.entity';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 
-import { CreateTaskDto } from './dto/create-task.dto';
-import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
-import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
-import { TasksRepository } from './tasks.repository';
+import { TasksRepository } from '../repository/tasks.repository';
 
 @Injectable()
 export class TasksService {

@@ -1,14 +1,14 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { TwoFactorAuthCredentialsDto } from '~/modules/auth/dtos/2FA-credentials.dto';
+import { OtpCodeDto } from '~/modules/auth/dtos/OTP-code.dto';
 import { IQrCodeUrl } from '~/modules/auth/interfaces/qr-code-url.interface';
+import { User } from '~/modules/users/entity/user.entity';
 
-import { User } from '~/common/entities/user.entity';
 import { CurrentUser } from '~/decorators/current-user.decorator';
 import { SkipAuth } from '~/decorators/skip-auth.decorator';
 
-import { TwoFactorAuthCredentialsDto } from '../dto/2FA-credentials.dto';
-import { OtpCodeDto } from '../dto/OTP-code.dto';
 import { IAccessToken } from '../interfaces/access-token.interface';
 import { TwoFactorAuthService } from '../services/2FA.service';
 

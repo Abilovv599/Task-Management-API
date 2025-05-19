@@ -4,9 +4,8 @@ import { PassportStrategy } from '@nestjs/passport';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { UsersService } from '~/modules/users/users.service';
-
-import { User } from '~/common/entities/user.entity';
+import { User } from '~/modules/users/entity/user.entity';
+import { UsersService } from '~/modules/users/services/users.service';
 
 import { IJwtPayload } from '../interfaces/jwt-payload.interface';
 

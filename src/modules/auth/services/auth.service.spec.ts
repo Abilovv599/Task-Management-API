@@ -2,12 +2,13 @@ import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { UsersService } from '~/modules/users/users.service';
+import { AuthCredentialsDto } from '~/modules/auth/dtos/auth-credentials.dto';
+import { User } from '~/modules/users/entity/user.entity';
+import { Role } from '~/modules/users/enums/role.enum';
+import { UsersService } from '~/modules/users/services/users.service';
 
-import { User } from '~/common/entities/user.entity';
 import * as bcryptLib from '~/lib/bcrypt';
 
-import { AuthCredentialsDto } from '../dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
 
 // Mock the comparePassword function
@@ -71,6 +72,7 @@ describe('AuthService', () => {
         password: 'hashed_password',
         isTwoFactorEnabled: false,
         isOAuthUser: false,
+        role: Role.User,
         tasks: [],
       };
 
@@ -96,6 +98,7 @@ describe('AuthService', () => {
         password: 'hashed_password',
         isTwoFactorEnabled: false,
         isOAuthUser: false,
+        role: Role.User,
         tasks: [],
       };
 
@@ -120,6 +123,7 @@ describe('AuthService', () => {
         email: 'test@example.com',
         isTwoFactorEnabled: false,
         isOAuthUser: false,
+        role: Role.User,
         tasks: [],
       };
 
@@ -152,6 +156,7 @@ describe('AuthService', () => {
         password: 'hashed_password',
         isTwoFactorEnabled: true,
         isOAuthUser: false,
+        role: Role.User,
         tasks: [],
       };
 
@@ -181,6 +186,7 @@ describe('AuthService', () => {
         password: 'hashed_password',
         isTwoFactorEnabled: false,
         isOAuthUser: false,
+        role: Role.User,
         tasks: [],
       };
 
@@ -213,6 +219,7 @@ describe('AuthService', () => {
         password: 'hashed_password',
         isTwoFactorEnabled: false,
         isOAuthUser: false,
+        role: Role.User,
         tasks: [],
       };
 

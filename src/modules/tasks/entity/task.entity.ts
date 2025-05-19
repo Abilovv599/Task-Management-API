@@ -1,8 +1,8 @@
 import { Exclude } from 'class-transformer';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { User } from '~/common/entities/user.entity';
-import { TaskStatus } from '~/common/enums/task-status.enum';
+import { TaskStatus } from '~/modules/tasks/enums/task-status.enum';
+import { User } from '~/modules/users/entity/user.entity';
 
 @Entity('tasks')
 export class Task {

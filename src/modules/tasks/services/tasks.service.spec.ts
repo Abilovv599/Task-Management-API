@@ -1,15 +1,16 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { GetFilteredTasksDto } from '~/modules/tasks/dtos/get-filtered-tasks.dto';
+import { UpdateTaskStatusDto } from '~/modules/tasks/dtos/update-task-status.dto';
+import { TaskStatus } from '~/modules/tasks/enums/task-status.enum';
+import { User } from '~/modules/users/entity/user.entity';
+import { Role } from '~/modules/users/enums/role.enum';
+
 import { PaginationDto } from '~/common/dtos/pagination.dto';
-import { User } from '~/common/entities/user.entity';
-import { Role } from '~/common/enums/role.enum';
-import { TaskStatus } from '~/common/enums/task-status.enum';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 
-import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
-import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
-import { TasksRepository } from './tasks.repository';
+import { TasksRepository } from '../repository/tasks.repository';
 import { TasksService } from './tasks.service';
 
 const mockTasksRepository = () => ({

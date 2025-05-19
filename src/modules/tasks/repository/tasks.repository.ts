@@ -3,13 +3,12 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
 import { PaginationService } from '~/modules/common/services/pagination.service';
+import { GetFilteredTasksDto } from '~/modules/tasks/dtos/get-filtered-tasks.dto';
+import { Task } from '~/modules/tasks/entity/task.entity';
+import { User } from '~/modules/users/entity/user.entity';
 
 import { PaginationDto } from '~/common/dtos/pagination.dto';
-import { Task } from '~/common/entities/task.entity';
-import { User } from '~/common/entities/user.entity';
 import { PaginatedList } from '~/common/models/paginated-list.model';
-
-import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
 
 @Injectable()
 export class TasksRepository extends Repository<Task> {

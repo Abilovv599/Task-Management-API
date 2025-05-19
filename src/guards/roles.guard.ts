@@ -3,8 +3,9 @@ import { Reflector } from '@nestjs/core';
 
 import { Request } from 'express';
 
-import { User } from '~/common/entities/user.entity';
-import { Role } from '~/common/enums/role.enum';
+import { User } from '~/modules/users/entity/user.entity';
+import { Role } from '~/modules/users/enums/role.enum';
+
 import { ROLES_KEY } from '~/decorators/allowed-roles.decorator';
 
 @Injectable()

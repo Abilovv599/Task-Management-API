@@ -5,9 +5,8 @@ import { ConfigService } from '@nestjs/config';
 import { Cache } from 'cache-manager';
 import { randomBytes } from 'crypto';
 
-import { UsersService } from '~/modules/users/users.service';
-
-import { User } from '~/common/entities/user.entity';
+import { User } from '~/modules/users/entity/user.entity';
+import { UsersService } from '~/modules/users/services/users.service';
 
 import { IAccessToken } from '../interfaces/access-token.interface';
 import { AuthService } from './auth.service';

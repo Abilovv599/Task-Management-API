@@ -3,10 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DataSource, SelectQueryBuilder } from 'typeorm';
 
 import { PaginationService } from '~/modules/common/services/pagination.service';
+import { User } from '~/modules/users/entity/user.entity';
+import { Role } from '~/modules/users/enums/role.enum';
 
 import { PaginationDto } from '~/common/dtos/pagination.dto';
-import { User } from '~/common/entities/user.entity';
-import { Role } from '~/common/enums/role.enum';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 
 import { UsersRepository } from './users.repository';

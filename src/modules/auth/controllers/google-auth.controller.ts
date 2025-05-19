@@ -2,12 +2,13 @@ import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 
 import { Response } from 'express';
 
-import { User } from '~/common/entities/user.entity';
+import { ExchangeCodeDto } from '~/modules/auth/dtos/exchange-code.dto';
+import { User } from '~/modules/users/entity/user.entity';
+
 import { CurrentUser } from '~/decorators/current-user.decorator';
 import { SkipAuth } from '~/decorators/skip-auth.decorator';
 import { GoogleAuthGuard } from '~/guards/google-auth.guard';
 
-import { ExchangeCodeDto } from '../dto/exchange-code.dto';
 import { IAccessToken } from '../interfaces/access-token.interface';
 import { GoogleAuthService } from '../services/google-auth.service';
 

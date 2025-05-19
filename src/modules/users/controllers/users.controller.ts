@@ -1,13 +1,14 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
+import { CreateUserDto } from '~/modules/users/dtos/create-user.dto';
+import { User } from '~/modules/users/entity/user.entity';
+import { Role } from '~/modules/users/enums/role.enum';
+
 import { PaginationDto } from '~/common/dtos/pagination.dto';
-import { User } from '~/common/entities/user.entity';
-import { Role } from '~/common/enums/role.enum';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 import { AllowedRoles } from '~/decorators/allowed-roles.decorator';
 
-import { CreateUserDto } from './dto/create-user.dto';
-import { UsersService } from './users.service';
+import { UsersService } from '../services/users.service';
 
 @AllowedRoles([Role.Admin])
 @Controller('users')

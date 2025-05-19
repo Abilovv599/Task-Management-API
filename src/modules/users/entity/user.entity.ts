@@ -1,8 +1,8 @@
 import { Exclude } from 'class-transformer';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Task } from '~/common/entities/task.entity';
-import { Role } from '~/common/enums/role.enum';
+import { Task } from '~/modules/tasks/entity/task.entity';
+import { Role } from '~/modules/users/enums/role.enum';
 
 @Entity('users')
 export class User {

@@ -1,12 +1,13 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
+import { CreateUserDto } from '~/modules/users/dtos/create-user.dto';
+import { User } from '~/modules/users/entity/user.entity';
+
 import { PaginationDto } from '~/common/dtos/pagination.dto';
-import { User } from '~/common/entities/user.entity';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 import { hashPassword } from '~/lib/bcrypt';
 
-import { CreateUserDto } from './dto/create-user.dto';
-import { UsersRepository } from './users.repository';
+import { UsersRepository } from '../repository/users.repository';
 
 @Injectable()
 export class UsersService {

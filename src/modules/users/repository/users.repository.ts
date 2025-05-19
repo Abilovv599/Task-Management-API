@@ -3,9 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
 import { PaginationService } from '~/modules/common/services/pagination.service';
+import { User } from '~/modules/users/entity/user.entity';
 
 import { PaginationDto } from '~/common/dtos/pagination.dto';
-import { User } from '~/common/entities/user.entity';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 
 @Injectable()
