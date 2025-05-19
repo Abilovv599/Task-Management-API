@@ -8,45 +8,75 @@ import { TransformInterceptor } from '~/interceptors/transform.interceptor';
 
 import { AppModule } from './modules/app.module';
 
-async function bootstrap() {
-  const environment = process.env.NODE_ENV ?? 'development';
+export class App {
+  private app: NestExpressApplication;
+  private readonly environment: string;
+  private readonly logger: Logger;
 
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
-  app.enableVersioning({
-    type: VersioningType.URI,
-    prefix: 'v',
-    defaultVersion: '1',
-  });
-
-  const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new GlobalExceptionFilter(httpAdapter));
-
-  app.setGlobalPrefix('api');
-
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-
-  app.useGlobalInterceptors(new TransformInterceptor());
-
-  app.enableCors({
-    origin: 'http://localhost:3001',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allow cookies if needed
-  });
-
-  if (environment === 'development') {
-    createSwagger(app);
+  constructor() {
+    this.environment = process.env.NODE_ENV ?? 'development';
+    this.logger = new Logger('Bootstrap', { timestamp: true });
   }
 
-  const port = process.env.PORT;
+  async bootstrap() {
+    this.app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  await app.listen(port ?? 3000);
+    this.setupVersioning();
+    this.setupGlobalFilters();
+    this.setupGlobalPrefix();
+    this.setupGlobalPipes();
+    this.setupGlobalInterceptors();
+    this.setupCors();
+    this.setupSwagger();
 
-  const logger = new Logger('Bootstrap', { timestamp: true });
+    const port = process.env.PORT ?? 3000;
 
-  logger.log(`Application running in "${environment}" mode on http://localhost:${port}/api/docs`);
+    await this.app.listen(port);
+    this.logger.log(`Application running in "${this.environment}" mode on http://localhost:${port}/api/docs`);
+  }
+
+  private setupVersioning() {
+    this.app.enableVersioning({
+      type: VersioningType.URI,
+      prefix: 'v',
+      defaultVersion: '1',
+    });
+  }
+
+  private setupGlobalFilters() {
+    const { httpAdapter } = this.app.get(HttpAdapterHost);
+    this.app.useGlobalFilters(new GlobalExceptionFilter(httpAdapter));
+  }
+
+  private setupGlobalPrefix() {
+    this.app.setGlobalPrefix('api');
+  }
+
+  private setupGlobalPipes() {
+    this.app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  }
+
+  private setupGlobalInterceptors() {
+    this.app.useGlobalInterceptors(new TransformInterceptor());
+  }
+
+  private setupCors() {
+    this.app.enableCors({
+      origin: 'http://localhost:3001',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+    });
+  }
+
+  private setupSwagger() {
+    if (this.environment === 'development') {
+      createSwagger(this.app);
+    }
+  }
 }
 
-bootstrap().catch((error) => {
+const app = new App();
+
+app.bootstrap().catch((error) => {
   console.error(error);
 });
