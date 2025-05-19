@@ -4,9 +4,9 @@ import { CreateUserDto } from '~/modules/users/dtos/create-user.dto';
 import { User } from '~/modules/users/entity/user.entity';
 import { Role } from '~/modules/users/enums/role.enum';
 
+import { AllowedRoles } from '~/common/decorators/allowed-roles.decorator';
 import { PaginationDto } from '~/common/dtos/pagination.dto';
 import { PaginatedList } from '~/common/models/paginated-list.model';
-import { AllowedRoles } from '~/decorators/allowed-roles.decorator';
 
 import { UsersService } from '../services/users.service';
 

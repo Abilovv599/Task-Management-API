@@ -6,7 +6,7 @@ import { Request } from 'express';
 import { User } from '~/modules/users/entity/user.entity';
 import { Role } from '~/modules/users/enums/role.enum';
 
-import { ROLES_KEY } from '~/decorators/allowed-roles.decorator';
+import { ROLES_KEY } from '~/common/decorators/allowed-roles.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

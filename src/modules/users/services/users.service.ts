@@ -4,8 +4,8 @@ import { CreateUserDto } from '~/modules/users/dtos/create-user.dto';
 import { User } from '~/modules/users/entity/user.entity';
 
 import { PaginationDto } from '~/common/dtos/pagination.dto';
+import { hashPassword } from '~/common/lib/bcrypt';
 import { PaginatedList } from '~/common/models/paginated-list.model';
-import { hashPassword } from '~/lib/bcrypt';
 
 import { UsersRepository } from '../repository/users.repository';
 

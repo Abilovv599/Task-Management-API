@@ -2,9 +2,8 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { RolesGuard } from '~/modules/common/guards/roles.guard';
 import { User } from '~/modules/users/entity/user.entity';
-
-import { RolesGuard } from '~/guards/roles.guard';
 
 import { UsersController } from './controllers/users.controller';
 import { UsersRepository } from './repository/users.repository';

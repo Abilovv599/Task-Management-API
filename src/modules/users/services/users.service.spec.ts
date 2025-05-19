@@ -6,14 +6,14 @@ import { User } from '~/modules/users/entity/user.entity';
 import { Role } from '~/modules/users/enums/role.enum';
 
 import { PaginationDto } from '~/common/dtos/pagination.dto';
+import { hashPassword } from '~/common/lib/bcrypt';
 import { PaginatedList } from '~/common/models/paginated-list.model';
-import * as bcryptLib from '~/lib/bcrypt';
 
 import { UsersRepository } from '../repository/users.repository';
 import { UsersService } from './users.service';
 
 // Mock the hashPassword function
-jest.mock('~/lib/bcrypt', () => ({
+jest.mock('~/common/lib/bcrypt', () => ({
   hashPassword: jest.fn(),
 }));
 
@@ -106,7 +106,7 @@ describe('UsersService', () => {
       };
 
       usersRepository.existsBy.mockResolvedValue(false);
-      (bcryptLib.hashPassword as jest.Mock).mockResolvedValue(hashedPassword);
+      (hashPassword as jest.Mock).mockResolvedValue(hashedPassword);
       usersRepository.create.mockReturnValue(mockUser);
       usersRepository.save.mockResolvedValue(mockUser);
 
@@ -118,7 +118,7 @@ describe('UsersService', () => {
       expect(usersRepository.existsBy).toHaveBeenCalledWith({
         email: createUserDto.email,
       });
-      expect(bcryptLib.hashPassword).toHaveBeenCalledWith(createUserDto.password);
+      expect(hashPassword).toHaveBeenCalledWith(createUserDto.password);
       expect(usersRepository.create).toHaveBeenCalledWith({
         ...createUserDto,
         password: hashedPassword,

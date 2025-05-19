@@ -5,7 +5,7 @@ import { AuthCredentialsDto } from '~/modules/auth/dtos/auth-credentials.dto';
 import { User } from '~/modules/users/entity/user.entity';
 import { UsersService } from '~/modules/users/services/users.service';
 
-import { comparePassword } from '~/lib/bcrypt';
+import { comparePassword } from '~/common/lib/bcrypt';
 
 import { IAccessToken } from '../interfaces/access-token.interface';
 import { IEnabled2FA } from '../interfaces/enabled-2FA.interface';

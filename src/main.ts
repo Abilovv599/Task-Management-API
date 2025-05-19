@@ -1,10 +1,8 @@
-import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { Logger, VersioningType } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
-import { createSwagger } from '~/configs/swagger.config';
-import { GlobalExceptionFilter } from '~/filters/global-exceptions.filter';
-import { TransformInterceptor } from '~/interceptors/transform.interceptor';
+import { createSwagger } from '~/common/configs/swagger.config';
 
 import { AppModule } from './modules/app.module';
 
@@ -22,10 +20,7 @@ export class App {
     this.app = await NestFactory.create<NestExpressApplication>(AppModule);
 
     this.setupVersioning();
-    this.setupGlobalFilters();
     this.setupGlobalPrefix();
-    this.setupGlobalPipes();
-    this.setupGlobalInterceptors();
     this.setupCors();
     this.setupSwagger();
 
@@ -43,21 +38,8 @@ export class App {
     });
   }
 
-  private setupGlobalFilters() {
-    const { httpAdapter } = this.app.get(HttpAdapterHost);
-    this.app.useGlobalFilters(new GlobalExceptionFilter(httpAdapter));
-  }
-
   private setupGlobalPrefix() {
     this.app.setGlobalPrefix('api');
-  }
-
-  private setupGlobalPipes() {
-    this.app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  }
-
-  private setupGlobalInterceptors() {
-    this.app.useGlobalInterceptors(new TransformInterceptor());
   }
 
   private setupCors() {

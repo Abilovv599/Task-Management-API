@@ -3,8 +3,8 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AuthCredentialsDto } from '~/modules/auth/dtos/auth-credentials.dto';
 import { User } from '~/modules/users/entity/user.entity';
 
-import { CurrentUser } from '~/decorators/current-user.decorator';
-import { SkipAuth } from '~/decorators/skip-auth.decorator';
+import { CurrentUser } from '~/common/decorators/current-user.decorator';
+import { SkipAuth } from '~/common/decorators/skip-auth.decorator';
 
 import { IAccessToken } from '../interfaces/access-token.interface';
 import { IEnabled2FA } from '../interfaces/enabled-2FA.interface';

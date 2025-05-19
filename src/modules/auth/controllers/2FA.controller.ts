@@ -6,8 +6,8 @@ import { OtpCodeDto } from '~/modules/auth/dtos/OTP-code.dto';
 import { IQrCodeUrl } from '~/modules/auth/interfaces/qr-code-url.interface';
 import { User } from '~/modules/users/entity/user.entity';
 
-import { CurrentUser } from '~/decorators/current-user.decorator';
-import { SkipAuth } from '~/decorators/skip-auth.decorator';
+import { CurrentUser } from '~/common/decorators/current-user.decorator';
+import { SkipAuth } from '~/common/decorators/skip-auth.decorator';
 
 import { IAccessToken } from '../interfaces/access-token.interface';
 import { TwoFactorAuthService } from '../services/2FA.service';

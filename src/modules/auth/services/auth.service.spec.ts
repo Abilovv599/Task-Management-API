@@ -7,12 +7,12 @@ import { User } from '~/modules/users/entity/user.entity';
 import { Role } from '~/modules/users/enums/role.enum';
 import { UsersService } from '~/modules/users/services/users.service';
 
-import * as bcryptLib from '~/lib/bcrypt';
+import * as bcryptLib from '~/common/lib/bcrypt';
 
 import { AuthService } from './auth.service';
 
 // Mock the comparePassword function
-jest.mock('~/lib/bcrypt', () => ({
+jest.mock('~/common/lib/bcrypt', () => ({
   comparePassword: jest.fn(),
 }));
 

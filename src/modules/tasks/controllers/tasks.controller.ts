@@ -6,9 +6,9 @@ import { UpdateTaskStatusDto } from '~/modules/tasks/dtos/update-task-status.dto
 import { Task } from '~/modules/tasks/entity/task.entity';
 import { User } from '~/modules/users/entity/user.entity';
 
+import { CurrentUser } from '~/common/decorators/current-user.decorator';
 import { PaginationDto } from '~/common/dtos/pagination.dto';
 import { PaginatedList } from '~/common/models/paginated-list.model';
-import { CurrentUser } from '~/decorators/current-user.decorator';
 
 import { TasksService } from '../services/tasks.service';
 
