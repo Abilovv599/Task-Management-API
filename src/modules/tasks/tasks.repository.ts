@@ -15,7 +15,7 @@ import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
 export class TasksRepository extends Repository<Task> {
   constructor(
     readonly dataSource: DataSource,
-    private paginationService: PaginationService,
+    private readonly paginationService: PaginationService,
   ) {
     super(Task, dataSource.createEntityManager());
   }
@@ -32,7 +32,6 @@ export class TasksRepository extends Repository<Task> {
 
     if (user) {
       query.where({ user });
-      // query.where('tasks.userId = :userId', { userId: user.id });
     }
 
     if (status) {
@@ -48,23 +47,6 @@ export class TasksRepository extends Repository<Task> {
 
     return this.paginationService.paginate<Task>(query, page, limit);
   }
-
-  // public async getTasks(filterDto: GetFilteredTasksDto) {
-  //   const { status, search } = filterDto;
-  //
-  //   const where: any = {};
-  //
-  //   if (status) {
-  //     where.status = status;
-  //   }
-  //
-  //   if (search) {
-  //     where.title = Like(`%${search}%`);
-  //     where.description = Like(`%${search}%`);
-  //   }
-  //
-  //   return this.find({ where });
-  // }
 
   public async deleteTask(id: string, user: User): Promise<number> {
     const result = await this.delete({ id, user });

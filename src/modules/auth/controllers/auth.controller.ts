@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { User } from '~/common/entities/user.entity';
-import { DataResult } from '~/common/models/data-result.model';
 import { CurrentUser } from '~/decorators/current-user.decorator';
 import { SkipAuth } from '~/decorators/skip-auth.decorator';
 
@@ -16,20 +15,18 @@ export class AuthController {
 
   @SkipAuth()
   @Post('register')
-  public async signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<DataResult<User>> {
-    return new DataResult(await this.authService.signUp(authCredentialsDto));
+  public async signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<User> {
+    return await this.authService.signUp(authCredentialsDto);
   }
 
   @SkipAuth()
   @Post('login')
-  public async signIn(
-    @Body() authCredentialsDto: AuthCredentialsDto,
-  ): Promise<DataResult<IAccessToken | IEnabled2FA>> {
-    return new DataResult(await this.authService.signIn(authCredentialsDto));
+  public async signIn(@Body() authCredentialsDto: AuthCredentialsDto): Promise<IAccessToken | IEnabled2FA> {
+    return await this.authService.signIn(authCredentialsDto);
   }
 
   @Get('profile')
-  public getProfile(@CurrentUser() user: User): DataResult<User> {
-    return new DataResult(user);
+  public getProfile(@CurrentUser() user: User): User {
+    return user;
   }
 }

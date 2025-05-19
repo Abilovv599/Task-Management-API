@@ -12,7 +12,7 @@ import { TasksRepository } from './tasks.repository';
 
 @Injectable()
 export class TasksService {
-  constructor(private tasksRepository: TasksRepository) {}
+  constructor(private readonly tasksRepository: TasksRepository) {}
 
   public async getTasks(
     filterDto: GetFilteredTasksDto,
@@ -24,7 +24,7 @@ export class TasksService {
 
   public async getTaskById(id: string, user?: User): Promise<Task> {
     const task = await this.tasksRepository.findOne({
-      where: { id, user: user && user },
+      where: { id, user: user },
     });
 
     if (!task) {

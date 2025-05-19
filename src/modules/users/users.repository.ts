@@ -12,7 +12,7 @@ import { PaginatedList } from '~/common/models/paginated-list.model';
 export class UsersRepository extends Repository<User> {
   constructor(
     readonly dataSource: DataSource,
-    private paginationService: PaginationService,
+    private readonly paginationService: PaginationService,
   ) {
     super(User, dataSource.createEntityManager());
   }

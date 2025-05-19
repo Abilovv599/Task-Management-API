@@ -3,7 +3,6 @@ import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 
 import { User } from '~/common/entities/user.entity';
-import { DataResult } from '~/common/models/data-result.model';
 import { CurrentUser } from '~/decorators/current-user.decorator';
 import { SkipAuth } from '~/decorators/skip-auth.decorator';
 
@@ -34,7 +33,7 @@ export class GoogleAuthController {
 
   @SkipAuth()
   @Post('google/exchange-code')
-  public async exchangeCode(@Body() { code }: ExchangeCodeDto): Promise<DataResult<IAccessToken>> {
-    return new DataResult(await this.googleAuthService.exchangeAuthCode(code));
+  public async exchangeCode(@Body() { code }: ExchangeCodeDto): Promise<IAccessToken> {
+    return await this.googleAuthService.exchangeAuthCode(code);
   }
 }

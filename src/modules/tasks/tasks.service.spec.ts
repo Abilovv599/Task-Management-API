@@ -1,22 +1,14 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
-
-
 import { PaginationDto } from '~/common/dtos/pagination.dto';
 import { TASK_STATUS } from '~/common/enums/task-status.enum';
 import { PaginatedList } from '~/common/models/paginated-list.model';
-
-
 
 import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { TasksRepository } from './tasks.repository';
 import { TasksService } from './tasks.service';
-
-
-
-
 
 const mockTasksRepository = () => ({
   getTasks: jest.fn(),
