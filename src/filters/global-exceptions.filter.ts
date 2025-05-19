@@ -7,7 +7,7 @@ import { QueryFailedError, TypeORMError } from 'typeorm';
 import { ErrorResult } from '~/common/models/error-result.model';
 
 @Catch()
-export class AllExceptionsFilter extends BaseExceptionFilter {
+export class GlobalExceptionFilter extends BaseExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();

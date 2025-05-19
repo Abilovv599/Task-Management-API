@@ -3,7 +3,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 
-import { AllExceptionsFilter } from '~/filters/all-exceptions.filter';
+import { GlobalExceptionFilter } from '~/filters/global-exceptions.filter';
 import { LoggerMiddleware } from '~/middlewares/logger.middleware';
 import { configValidationSchema } from '~/schemas/config.schema';
 
@@ -32,7 +32,7 @@ import { UsersModule } from './users/users.module';
   providers: [
     {
       provide: APP_FILTER,
-      useClass: AllExceptionsFilter,
+      useClass: GlobalExceptionFilter,
     },
   ],
 })

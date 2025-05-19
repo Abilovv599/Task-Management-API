@@ -3,7 +3,7 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { createSwagger } from '~/configs/swagger.config';
-import { AllExceptionsFilter } from '~/filters/all-exceptions.filter';
+import { GlobalExceptionFilter } from '~/filters/global-exceptions.filter';
 import { TransformInterceptor } from '~/interceptors/transform.interceptor';
 
 import { AppModule } from './modules/app.module';
@@ -20,7 +20,7 @@ async function bootstrap() {
   });
 
   const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+  app.useGlobalFilters(new GlobalExceptionFilter(httpAdapter));
 
   app.setGlobalPrefix('api');
 
