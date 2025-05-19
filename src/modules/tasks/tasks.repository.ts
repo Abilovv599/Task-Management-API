@@ -14,7 +14,7 @@ import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
 @Injectable()
 export class TasksRepository extends Repository<Task> {
   constructor(
-    readonly dataSource: DataSource,
+    dataSource: DataSource,
     private readonly paginationService: PaginationService,
   ) {
     super(Task, dataSource.createEntityManager());
