@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { PaginationDto } from '~/common/dtos/pagination.dto';
 import { User } from '~/common/entities/user.entity';
+import { Role } from '~/common/enums/role.enum';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 import * as bcryptLib from '~/lib/bcrypt';
 
@@ -46,6 +47,7 @@ describe('UsersService', () => {
           email: 'test1@example.com',
           isTwoFactorEnabled: false,
           isOAuthUser: false,
+          role: Role.User,
           tasks: [],
         },
         {
@@ -53,6 +55,7 @@ describe('UsersService', () => {
           email: 'test2@example.com',
           isTwoFactorEnabled: false,
           isOAuthUser: false,
+          role: Role.Admin,
           tasks: [],
         },
       ];
@@ -97,6 +100,7 @@ describe('UsersService', () => {
         password: hashedPassword,
         isTwoFactorEnabled: false,
         isOAuthUser: false,
+        role: Role.User,
         tasks: [],
       };
 
@@ -141,6 +145,7 @@ describe('UsersService', () => {
         email,
         isTwoFactorEnabled: false,
         isOAuthUser: true,
+        role: Role.User,
         tasks: [],
       };
 
@@ -171,6 +176,7 @@ describe('UsersService', () => {
         email,
         isTwoFactorEnabled: false,
         isOAuthUser: false,
+        role: Role.User,
         tasks: [],
       };
       usersRepository.findOneBy.mockResolvedValue(mockUser);
@@ -206,6 +212,7 @@ describe('UsersService', () => {
         email: 'test@example.com',
         isTwoFactorEnabled: false,
         isOAuthUser: false,
+        role: Role.User,
         tasks: [],
       };
       usersRepository.findOneBy.mockResolvedValue(mockUser);
@@ -237,6 +244,7 @@ describe('UsersService', () => {
         email: 'test@example.com',
         isTwoFactorEnabled: true, // Updated value
         isOAuthUser: false,
+        role: Role.User,
         tasks: [],
       };
       usersRepository.save.mockResolvedValue(mockUser);

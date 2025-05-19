@@ -5,9 +5,9 @@ import { Response } from 'express';
 import { User } from '~/common/entities/user.entity';
 import { CurrentUser } from '~/decorators/current-user.decorator';
 import { SkipAuth } from '~/decorators/skip-auth.decorator';
+import { GoogleAuthGuard } from '~/guards/google-auth.guard';
 
 import { ExchangeCodeDto } from '../dto/exchange-code.dto';
-import { GoogleAuthGuard } from '../guards/google-auth.guard';
 import { IAccessToken } from '../interfaces/access-token.interface';
 import { GoogleAuthService } from '../services/google-auth.service';
 

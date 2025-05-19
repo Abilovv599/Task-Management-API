@@ -6,6 +6,7 @@ import { PaginationService } from '~/modules/common/services/pagination.service'
 
 import { PaginationDto } from '~/common/dtos/pagination.dto';
 import { User } from '~/common/entities/user.entity';
+import { Role } from '~/common/enums/role.enum';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 
 import { UsersRepository } from './users.repository';
@@ -57,6 +58,7 @@ describe('UsersRepository', () => {
           email: 'test1@example.com',
           isTwoFactorEnabled: false,
           isOAuthUser: false,
+          role: Role.Admin,
           tasks: [],
         },
         {
@@ -64,6 +66,7 @@ describe('UsersRepository', () => {
           email: 'test2@example.com',
           isTwoFactorEnabled: false,
           isOAuthUser: false,
+          role: Role.User,
           tasks: [],
         },
       ];
@@ -89,6 +92,7 @@ describe('UsersRepository', () => {
           email: 'test1@example.com',
           isTwoFactorEnabled: false,
           isOAuthUser: false,
+          role: Role.Admin,
           tasks: [],
         },
       ];

@@ -24,7 +24,7 @@ export class AuthService {
     const user = await this.usersService.getUserByEmail(email);
 
     if (!user) {
-      const error = new NotFoundException(`User with username ${email} not found`);
+      const error = new NotFoundException(`User with email ${email} not found`);
       throw new UnauthorizedException(error.message);
     }
 

@@ -7,7 +7,8 @@ import { PaginationService } from '~/modules/common/services/pagination.service'
 import { PaginationDto } from '~/common/dtos/pagination.dto';
 import { Task } from '~/common/entities/task.entity';
 import { User } from '~/common/entities/user.entity';
-import { TASK_STATUS } from '~/common/enums/task-status.enum';
+import { Role } from '~/common/enums/role.enum';
+import { TaskStatus } from '~/common/enums/task-status.enum';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 
 import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
@@ -17,6 +18,15 @@ describe('TasksRepository', () => {
   let tasksRepository: TasksRepository;
   let paginationService: jest.Mocked<PaginationService>;
   let queryBuilder: jest.Mocked<SelectQueryBuilder<Task>>;
+
+  const mockUser: User = {
+    id: 'test-user-id',
+    email: 'test@example.com',
+    isTwoFactorEnabled: false,
+    isOAuthUser: false,
+    role: Role.User,
+    tasks: [],
+  };
 
   beforeEach(async () => {
     // Create a mock for QueryBuilder
@@ -53,27 +63,19 @@ describe('TasksRepository', () => {
   });
 
   describe('getTasks', () => {
-    const mockUser: User = {
-      id: 'test-user-id',
-      email: 'test@example.com',
-      isTwoFactorEnabled: false,
-      isOAuthUser: false,
-      tasks: [],
-    };
-
     const mockTasks: Task[] = [
       {
         id: 'test-task-id-1',
         title: 'Test task 1',
         description: 'Test description 1',
-        status: TASK_STATUS.OPEN,
+        status: TaskStatus.Open,
         user: mockUser,
       },
       {
         id: 'test-task-id-2',
         title: 'Test task 2',
         description: 'Test description 2',
-        status: TASK_STATUS.IN_PROGRESS,
+        status: TaskStatus.InProgress,
         user: mockUser,
       },
     ];
@@ -114,10 +116,10 @@ describe('TasksRepository', () => {
 
     it('should filter by status if provided', async () => {
       // Arrange
-      const filterDto: GetFilteredTasksDto = { status: TASK_STATUS.OPEN };
+      const filterDto: GetFilteredTasksDto = { status: TaskStatus.Open };
       const paginationDto: PaginationDto = {};
       const mockPaginatedList = new PaginatedList<Task>(
-        [mockTasks[0]], // Only the OPEN task
+        [mockTasks[0]], // Only the Open task
         1,
         1,
         10,
@@ -130,7 +132,7 @@ describe('TasksRepository', () => {
 
       // Assert
       expect(queryBuilder.andWhere).toHaveBeenCalledWith('tasks.status = :status', {
-        status: TASK_STATUS.OPEN,
+        status: TaskStatus.Open,
       });
       expect(paginationService.paginate).toHaveBeenCalledWith(queryBuilder, 1, 10);
       expect(result).toEqual(mockPaginatedList);
@@ -158,10 +160,10 @@ describe('TasksRepository', () => {
 
     it('should apply all filters if provided', async () => {
       // Arrange
-      const filterDto: GetFilteredTasksDto = { status: TASK_STATUS.OPEN, search: 'test' };
+      const filterDto: GetFilteredTasksDto = { status: TaskStatus.Open, search: 'test' };
       const paginationDto: PaginationDto = { page: 2, limit: 5 };
       const mockPaginatedList = new PaginatedList<Task>(
-        [mockTasks[0]], // Only the OPEN task
+        [mockTasks[0]], // Only the Open task
         1,
         2,
         5,
@@ -175,7 +177,7 @@ describe('TasksRepository', () => {
       // Assert
       expect(queryBuilder.where).toHaveBeenCalledWith({ user: mockUser });
       expect(queryBuilder.andWhere).toHaveBeenCalledWith('tasks.status = :status', {
-        status: TASK_STATUS.OPEN,
+        status: TaskStatus.Open,
       });
       expect(queryBuilder.andWhere).toHaveBeenCalledWith(
         '(LOWER(tasks.title) LIKE LOWER(:search) OR LOWER(tasks.description) LIKE LOWER(:search))',
@@ -190,13 +192,6 @@ describe('TasksRepository', () => {
     it('should delete a task and return the number of affected rows', async () => {
       // Arrange
       const taskId = 'test-task-id';
-      const mockUser: User = {
-        id: 'test-user-id',
-        email: 'test@example.com',
-        isTwoFactorEnabled: false,
-        isOAuthUser: false,
-        tasks: [],
-      };
 
       const deleteResult: DeleteResult = {
         raw: {},
@@ -216,13 +211,6 @@ describe('TasksRepository', () => {
     it('should return 0 if no task was deleted', async () => {
       // Arrange
       const taskId = 'non-existent-task-id';
-      const mockUser: User = {
-        id: 'test-user-id',
-        email: 'test@example.com',
-        isTwoFactorEnabled: false,
-        isOAuthUser: false,
-        tasks: [],
-      };
 
       const deleteResult: DeleteResult = {
         raw: {},
@@ -242,13 +230,6 @@ describe('TasksRepository', () => {
     it('should return 0 if affected is null', async () => {
       // Arrange
       const taskId = 'test-task-id';
-      const mockUser: User = {
-        id: 'test-user-id',
-        email: 'test@example.com',
-        isTwoFactorEnabled: false,
-        isOAuthUser: false,
-        tasks: [],
-      };
 
       const deleteResult: DeleteResult = {
         raw: {},

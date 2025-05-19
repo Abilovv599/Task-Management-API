@@ -2,7 +2,9 @@ import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PaginationDto } from '~/common/dtos/pagination.dto';
-import { TASK_STATUS } from '~/common/enums/task-status.enum';
+import { User } from '~/common/entities/user.entity';
+import { Role } from '~/common/enums/role.enum';
+import { TaskStatus } from '~/common/enums/task-status.enum';
 import { PaginatedList } from '~/common/models/paginated-list.model';
 
 import { GetFilteredTasksDto } from './dto/get-filtered-tasks.dto';
@@ -18,11 +20,12 @@ const mockTasksRepository = () => ({
   deleteTask: jest.fn(),
 });
 
-const mockUser = {
+const mockUser: User = {
   id: 'test-user-id',
   email: 'test@example.com',
   isTwoFactorEnabled: false,
   isOAuthUser: false,
+  role: Role.User,
   tasks: [],
 };
 
@@ -30,7 +33,7 @@ const mockTask = {
   id: 'test-task-id',
   title: 'Test task',
   description: 'Test description',
-  status: TASK_STATUS.OPEN,
+  status: TaskStatus.Open,
   user: mockUser,
 };
 
@@ -83,7 +86,7 @@ describe('TasksService', () => {
   describe('getTasks', () => {
     it('calls TasksRepository.getTasks and returns the result', async () => {
       // Arrange
-      const filterDto: GetFilteredTasksDto = { status: TASK_STATUS.OPEN, search: 'test' };
+      const filterDto: GetFilteredTasksDto = { status: TaskStatus.Open, search: 'test' };
       const paginationDto: PaginationDto = { page: 2, limit: 15 };
       const mockTasks = [mockTask];
       const mockPaginatedList = new PaginatedList<any>(mockTasks, 1, 2, 15);
@@ -125,8 +128,8 @@ describe('TasksService', () => {
   describe('updateTaskStatus', () => {
     it('updates task status and returns the updated task', async () => {
       // Arrange
-      const updateTaskStatusDto: UpdateTaskStatusDto = { status: TASK_STATUS.DONE };
-      const updatedTask = { ...mockTask, status: TASK_STATUS.DONE };
+      const updateTaskStatusDto: UpdateTaskStatusDto = { status: TaskStatus.Done };
+      const updatedTask = { ...mockTask, status: TaskStatus.Done };
 
       tasksRepository.findOne.mockResolvedValue(mockTask);
       tasksRepository.save.mockResolvedValue(updatedTask);
@@ -138,13 +141,13 @@ describe('TasksService', () => {
       expect(tasksRepository.findOne).toHaveBeenCalledWith({
         where: { id: 'test-task-id', user: mockUser },
       });
-      expect(tasksRepository.save).toHaveBeenCalledWith({ ...mockTask, status: TASK_STATUS.DONE });
+      expect(tasksRepository.save).toHaveBeenCalledWith({ ...mockTask, status: TaskStatus.Done });
       expect(result).toEqual(updatedTask);
     });
 
     it('throws NotFoundException if task is not found', async () => {
       // Arrange
-      const updateTaskStatusDto: UpdateTaskStatusDto = { status: TASK_STATUS.DONE };
+      const updateTaskStatusDto: UpdateTaskStatusDto = { status: TaskStatus.Done };
 
       tasksRepository.findOne.mockResolvedValue(null);
 
