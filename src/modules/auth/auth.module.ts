@@ -4,12 +4,13 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
-import { JwtAuthGuard } from '~/modules/common/guards/jwt-auth.guard';
 import { UsersModule } from '~/modules/users/users.module';
 
 import { TwoFactorAuthController } from './controllers/2FA.controller';
 import { AuthController } from './controllers/auth.controller';
 import { GoogleAuthController } from './controllers/google-auth.controller';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RolesGuard } from './guards/roles.guard';
 import { TwoFactorAuthService } from './services/2FA.service';
 import { AuthService } from './services/auth.service';
 import { GoogleAuthService } from './services/google-auth.service';
@@ -41,6 +42,10 @@ import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
   exports: [AuthService],

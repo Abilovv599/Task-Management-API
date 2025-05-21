@@ -81,7 +81,7 @@ ordered and cover both architectural and code-level improvements.
 
 ### Authentication and Authorization
 
-46. [ ] Implement role-based access control
+46. [x] Implement role-based access control
 47. [ ] Enhance two-factor authentication with backup codes
 48. [ ] Implement password policies and expiration
 49. [ ] Add account lockout after failed login attempts
