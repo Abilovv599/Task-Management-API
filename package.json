@@ -59,7 +59,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.12",
-    "@types/node": "^22.13.1",
+    "@types/node": "^24.0.10",
     "@types/passport-google-oauth2": "^0.1.10",
     "@types/passport-jwt": "^4.0.1",
     "@types/qrcode": "^1.5.5",
@@ -80,6 +80,6 @@
     "webpack": "^5.97.1"
   },
   "volta": {
-    "node": "22.13.1"
+    "node": "24.3.0"
   }
 }
